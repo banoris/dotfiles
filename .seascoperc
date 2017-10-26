@@ -1,0 +1,8 @@
+recent_projects=/home/biskhand/pedgms/cscope/xen_ww32p2_proxydroid
+app_style=Breeze
+app_font=Sans Serif,9,-1,5,50,0,0,0,0,0
+inner_editing=false
+edit_show_line_num=true
+exit_dont_ask=true
+edit_ext_cmd=x-terminal-emulator -e vim %F +%L
+

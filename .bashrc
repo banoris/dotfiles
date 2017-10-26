@@ -151,7 +151,7 @@ alias sbashrc='source ~/.bashrc'
 alias dirs='dirs -v'
 alias h='history | cut -c 8- | v -' # cut is to remove the numbers in history
 alias less='less -i'
-alias gsr='grep -sr'
+alias gsr='grep -srn'
 
 # my variables
 SDB='/media/biskhand/9ff82023-a237-4dbe-8ce6-7dda14da6e11/home/biskhand'
@@ -202,6 +202,8 @@ if [ -e /usr/share/autojump/autojump.sh ]; then
 	. /usr/share/autojump/autojump.sh
 fi
 
+# enable forward search in bash  https://stackoverflow.com/questions/791765/unable-to-forward-search-bash-history-similarly-as-with-ctrl-r
+stty -ixon
 
 
 

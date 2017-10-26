@@ -1,6 +1,9 @@
+$include /etc/inputrc
+
 # https://liquidat.wordpress.com/2008/08/20/short-tip-bash-tab-completion-with-one-tab/
 # press tab only once for suggestion to come out
 set show-all-if-ambiguous on
 
 # ignore case completion
 set completion-ignore-case on
+

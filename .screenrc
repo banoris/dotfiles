@@ -1,0 +1,59 @@
+
+# https://unix.stackexchange.com/questions/43229/is-there-a-way-to-make-screen-scroll-like-a-normal-terminal
+termcapinfo rxvt-unicode ti@:te@
+termcapinfo rxvt ti@:te@
+termcapinfo rxvt 'hs:ts=\E]2;:fs=07:ds=\E]2;screen07'
+
+# skip the startup message
+startup_message off
+
+# go to home dir
+chdir
+
+# Automatically detach on hangup. 
+autodetach on
+
+# Change default scrollback value for new windows
+defscrollback 10000
+
+# start with visual bell as default
+vbell on
+vbell_msg "bell on %t (%n)"
+
+# look and feel
+#caption always "%{= bb}%{+b w}%n %t %h %=%l %H %c"
+hardstatus alwayslastline "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
+
+activity "Activity in %t(%n)"
+
+shelltitle "shell"
+shell -$SHELL
+
+# Enable scroll on mouse wheel 
+# https://stackoverflow.com/questions/359109/using-the-scrollwheel-in-gnu-screen
+termcapinfo xterm* ti@:te@
+
+# clear screen after using vim/less etc. Just like normal terminal
+# https://superuser.com/questions/137714/using-screen-commands-like-less-and-man-dont-clear-the-screen-afterwards/137751#137751
+altscreen on
+
+# bindkey BEGIN {{{
+# TODO: NOT WORKING 
+# left + right arrow key meta key mods
+#bindkey '^5D' prev  # change window with ctrl-left
+#bindkey '^5C' next  # change window with ctrl-right
+#bindkey "^[[5D" prev
+#bindkey "^[[5C" next
+#bindkey ^[[d prev
+#bindkey ^[[c next
+#bindkey '^[[1;5D' prev
+
+# https://askubuntu.com/questions/53556/strange-characters-appearing-when-i-use-the-ctrl-and-arrow-keys-to-navigate
+# FIXME: crazy behavior...
+bindkey ';5D' prev
+bindkey ';5C' next
+
+# bindkey END  }}}
+
+
+### End URL
