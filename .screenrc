@@ -1,8 +1,9 @@
 
 # https://unix.stackexchange.com/questions/43229/is-there-a-way-to-make-screen-scroll-like-a-normal-terminal
-termcapinfo rxvt-unicode ti@:te@
-termcapinfo rxvt ti@:te@
-termcapinfo rxvt 'hs:ts=\E]2;:fs=07:ds=\E]2;screen07'
+#termcapinfo rxvt-unicode ti@:te@
+#termcapinfo rxvt ti@:te@
+#termcapinfo rxvt 'hs:ts=\E]2;:fs=07:ds=\E]2;screen07'
+termcapinfo xterm* ti@:te@
 
 # skip the startup message
 startup_message off

@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/softstrap'
+let g:netrw_dirhist_2='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/softstrap/pch_softstrap_check_cold_reset_test'
+let g:netrw_dirhist_3='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/softstrap/pch_softstrap_check_s3_test'
+let g:netrw_dirhist_4='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/softstrap/pch_softstrap_check_test'
+let g:netrw_dirhist_5='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/fuse'
+let g:netrw_dirhist_6='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/fuse/pch_fuse_check_s3_test'
+let g:netrw_dirhist_7='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/fuse/pch_fuse_check_cold_reset_test'
+let g:netrw_dirhist_8='/nfs/png/stod/stod0026/w.biskhand.101/ICPN_FUSE_VAL_0p8/verif/tests/fuse/pch_fuse_check_warm_reset_test'

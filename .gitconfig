@@ -1,12 +1,12 @@
-
 [color]
 	ui = auto
+
 [alias]
-    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    zip = archive --format=zip -o CODE.zip HEAD
     diverges = !sh -c 'git rev-list --boundary $1...$2 | grep ^- | cut -c2-'
     diverges1 = !sh -c 'git rev-list $(git rev-list --first-parent ^$1 $2| tail -n1)^^!'
     changed = show --pretty=\"format:\" --name-only
-    st = status -s
+    st = status -sb
     cl = clone
     ci = commit
     co = checkout
@@ -32,13 +32,14 @@
     caa = commit -a --amend -C HEAD
     # }}}
     # log commands {{{
-	lns = log --name-status
-    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%cd]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+    lns = log --name-status
+	lnd = log --oneline --no-decorate
+    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%cd]%Cred%d\\ %Creset%s%Cblue\\ [%an]" --decorate --date=relative
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     lc  = "!f() { git ll "$1"^.."$1"; }; f"
     lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
     fl = log -u
-    filelog = log -u
+    filelog = log -p -M --follow
     # }}}
     # diff {{{
     d = diff --word-diff
@@ -47,6 +48,7 @@
     dlc = diff --cached HEAD^
     dr  = "!f() { git diff -w "$1"^.."$1"; }; f"
     diffr  = "!f() { git diff "$1"^.."$1"; }; f"
+	dtv = difftool --tool=vimdiff
     # }}}
     # reset commands {{{
     r1 = reset HEAD^
@@ -113,3 +115,10 @@
 
 [diff]
     tool = meld
+
+[difftool]
+    prompt = false
+
+[mergetool]
+    tool = meld
+
