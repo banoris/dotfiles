@@ -49,6 +49,7 @@ set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
 set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
+hi CursorLine cterm=NONE ctermbg=darkblue ctermfg=white
 
 " superb vimdiff https://vimways.org/2018/the-power-of-diff/
 " Change the diff algorithm to be sort of like in meld
