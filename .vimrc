@@ -49,11 +49,24 @@ set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
 set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
-hi CursorLine cterm=NONE ctermbg=darkblue ctermfg=white
+
+" Auto reload file like Sublime. https://unix.stackexchange.com/a/383044
+set autoread
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+    \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+"autocmd FileChangedShellPost *
+"  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+
+" https://stackoverflow.com/questions/8640276/how-do-i-change-my-vim-highlight-line-to-not-be-an-underline
+" Line highlight do not override syntax highlight
+set t_Co=256
+hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+hi Search     cterm=NONE ctermbg=yellow ctermfg=black
 
 " superb vimdiff https://vimways.org/2018/the-power-of-diff/
 " Change the diff algorithm to be sort of like in meld
-if v:version < 800
+if v:version > 800
 	set diffopt+=algorithm:patience
 	set diffopt+=indent-heuristic
 endif
@@ -136,7 +149,8 @@ augroup LargeFile
 augroup END
 
 " Set scripts to be executable from the shell https://unix.stackexchange.com/questions/39982/vim-create-file-with-x-bit
-au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/usr/bin/env" | silent execute "!chmod a+x <afile>" | endif | endif
+" TODO:BUG problem with #!/usr/bin/env python ??? When you write :w, vim goes to bg
+" au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/usr/bin/env" | silent execute "!chmod a+x <afile>" | endif | endif
 
 " https://github.com/bfrg/vim-cpp-modern
 let g:cpp_simple_highlight = 1
@@ -159,8 +173,10 @@ endfunction
 
 " Set up color for GUI and Terminal
 if has('gui_running')
-    colorscheme default
-    set guifont=DejaVu\ Sans\ Mono\ 11
+    " Disable bell sound
+    set vb t_vb=
+    colorscheme desert
+    set guifont=DejaVu\ Sans\ Mono\ 12
     set guioptions-=T  " remove toolbar
     set guicursor+=n-v-c:blinkon0  " disable blinking cursor
 else
@@ -168,4 +184,11 @@ else
 endif
 
 " END gvim setting }}}
+
+" Useful stuff {{{
+" ===================
+" %s/\s\+$//e - remove whitespace noise
+" Visual to highlight line > gq - wrap line based on colorcolumn. Useful for git commit
+" }}}
+
 
