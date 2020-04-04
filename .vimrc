@@ -42,6 +42,7 @@ set statusline+=%l        " Current line
 set statusline+=/         " Separator
 set statusline+=%L        " Total lines
 set wildmode=longest:list,full  " bash like filename tab completion
+" Refer wildmenu demo here https://www.youtube.com/watch?v=ri6pZo1TvKE
 set wildmenu
 "set path+=**
 "set path+=*
@@ -49,6 +50,24 @@ set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
 set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
+
+" BEGIN good enough autocomplete setting {{{
+set omnifunc=syntaxcomplete#Complete
+set completeopt=menu,menuone,noinsert
+" Add dictionary to autocomplete list https://vim.fandom.com/wiki/Dictionary_completions
+set complete+=k
+" Set dictionary based on filetype, e.g. *.java will load ~/.vim/dictionary/java.txt
+au FileType * execute 'setlocal dict+=~/.vim/dictionary/'.&filetype.'.txt'
+
+" automatically runs C-p in insert mode
+function! OpenCompletion()
+    if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
+        call feedkeys("\<C-p>", "n")
+    endif
+endfunction
+autocmd InsertCharPre * call OpenCompletion()
+" END autocomplete setting }}}
+
 
 " Auto reload file like Sublime. https://unix.stackexchange.com/a/383044
 set autoread
@@ -190,5 +209,4 @@ endif
 " %s/\s\+$//e - remove whitespace noise
 " Visual to highlight line > gq - wrap line based on colorcolumn. Useful for git commit
 " }}}
-
 
