@@ -192,8 +192,11 @@ export SER3=R1J56L2006cc32
 # export PROMPT_COMMAND="history -a;history -c;history -r;$PROMPT_COMMAND"  # all terminal will be dirtied with other cmds from diff terminal
 
 # check these two in ~/.inputrc
-#set completion-ignore-case on  # ignorecase tab completion
-#set show-all-if-ambiguous on   # 
+#set completion-ignore-case on
+#set show-all-if-ambiguous on
+if [ -f ~/.inputrc ]; then
+    bind -f ~/.inputrc
+fi
 # TODO: check server or local machine, use diff color to remind that you are inside server's shell
 export PS1="\[\e[1;36m\][\u@\h \w]\$(parse_git_branch) \D{%a %H:%M}\n\$\[\e[m\] "
 
