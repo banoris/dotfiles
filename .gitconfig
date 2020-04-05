@@ -8,7 +8,7 @@
     changed = show --pretty=\"format:\" --name-only
     st = status -sb
     cl = clone
-    ci = commit
+    ci = commit -v
     co = checkout
     br = branch
     r = reset
@@ -115,6 +115,7 @@
 
 [diff]
     tool = meld
+    wsErrorHighlight = all
 
 [difftool]
     prompt = false
