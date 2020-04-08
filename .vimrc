@@ -65,6 +65,10 @@ function LoadDictionary()
         execute 'setlocal dict+='.file
     endfor
 endfunction
+
+"call plug#begin()
+"call plug#end()
+
 " automatically runs C-p in insert mode
 function! OpenCompletion()
     if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
