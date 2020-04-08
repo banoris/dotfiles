@@ -56,9 +56,15 @@ set omnifunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noinsert
 " Add dictionary to autocomplete list https://vim.fandom.com/wiki/Dictionary_completions
 set complete+=k
-" Set dictionary based on filetype, e.g. *.java will load ~/.vim/dictionary/java.txt
-au FileType * execute 'setlocal dict+=~/.vim/dictionary/'.&filetype.'.txt'
 
+" Fill dictionary based on filetype,
+" e.g. *.java will load ~/.vim/dictionary/java/*.txt
+au FileType * call LoadDictionary()
+function LoadDictionary()
+    for file in split(glob('~/.vim/dictionary/'.&filetype.'/*.txt'), '\n')
+        execute 'setlocal dict+='.file
+    endfor
+endfunction
 " automatically runs C-p in insert mode
 function! OpenCompletion()
     if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
