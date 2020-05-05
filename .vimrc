@@ -97,13 +97,6 @@ set t_Co=256
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 hi Search     cterm=NONE ctermbg=yellow ctermfg=black
 
-" superb vimdiff https://vimways.org/2018/the-power-of-diff/
-" Change the diff algorithm to be sort of like in meld
-if v:version > 800
-	set diffopt+=algorithm:patience
-	set diffopt+=indent-heuristic
-endif
-
 " wrap lines without breaking words, list should be off for this feature
 " usage:  :wrap
 command! -nargs=* Wrap set wrap linebreak nolist
@@ -200,6 +193,22 @@ function LargeFile()
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
+
+" BEGIN vimdiff {{{
+
+" superb vimdiff https://vimways.org/2018/the-power-of-diff/
+" Change the diff algorithm to be sort of like in meld
+if v:version > 800
+	set diffopt+=algorithm:patience
+	set diffopt+=indent-heuristic
+endif
+
+" Refer demo https://github.com/banoris/dotfiles/issues/6
+hi DiffAdd      ctermfg=NONE          ctermbg=DarkGreen
+hi DiffChange   ctermfg=NONE          ctermbg=NONE
+hi DiffDelete   ctermfg=LightBlue     ctermbg=Red
+hi DiffText     ctermfg=Yellow        ctermbg=Red
+" END vimdiff }}}
 
 " BEGIN gvim setting {{{
 
