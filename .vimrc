@@ -49,7 +49,11 @@ set wildmenu
 set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
-set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
+
+" FIXME: vim process stopped after running command
+"   Even vimdiff is broken
+" https://superuser.com/questions/646217/vim-process-stops-after-executing-an-external-command
+"set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
 
 " BEGIN good enough autocomplete setting {{{
 set omnifunc=syntaxcomplete#Complete
