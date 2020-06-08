@@ -124,3 +124,6 @@
 [mergetool]
     tool = meld
 
+[user]
+	name = banoris
+	email = banoris@protonmail.com
