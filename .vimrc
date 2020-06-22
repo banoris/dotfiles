@@ -112,7 +112,6 @@ set noswapfile
 
 " BEGIN key mapping {{{
 
-
 " Disable Ex mode when pressing Q
 nnoremap Q <nop>
 " open ctag file symbol under cursor
@@ -163,6 +162,8 @@ map <C-j> <Esc>
 map <F8> <Esc>:w<CR>:!clear; gcc % -o %< && ./%<<CR>
 imap <F8> <Esc>:w<CR>:!clear; gcc % -o %< && ./%<<CR>
 
+" Shift-z-q quit a buffer, Shift z-w to quit all
+nnoremap <S-z><S-w> <Esc>:qa!<CR>
 " END key mapping }}}
 
 let MRU_Max_Entries = 100
