@@ -208,7 +208,7 @@ endif
 hi DiffAdd      ctermfg=NONE          ctermbg=DarkGreen
 hi DiffChange   ctermfg=NONE          ctermbg=NONE
 hi DiffDelete   ctermfg=LightBlue     ctermbg=Red
-hi DiffText     ctermfg=Yellow        ctermbg=Red
+hi DiffText     ctermfg=Yellow        ctermbg=Blue
 " END vimdiff }}}
 
 " BEGIN gvim setting {{{
