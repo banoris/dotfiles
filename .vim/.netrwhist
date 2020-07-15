@@ -1,5 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/home/biskhand/disk2/embargo-ufo/rain-tombstone2/Source/media/media_driver/android'
-let g:netrw_dirhist_2='/home/biskhand/disk2/embargo-ufo/rain-tombstone2/Tools/Android'
-let g:netrw_dirhist_3='/home/biskhand/disk2/AND-Q/git_gfx-gerrit/gfx-driver_ifdefAndroid/Source/media/media_embargo/android'
