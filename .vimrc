@@ -84,9 +84,9 @@ autocmd InsertCharPre * call OpenCompletion()
 
 
 " Auto reload file like Sublime. https://unix.stackexchange.com/a/383044
-set autoread
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
-    \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+" set autoread
+" autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+"     \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 "autocmd FileChangedShellPost *
 "  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
