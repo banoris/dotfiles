@@ -1,3 +1,6 @@
 [submodule ".vim/pack/banoris/start/vim-commentary"]
 	path = .vim/pack/banoris/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
+[submodule ".vim/pack/banoris/start/logsyntax.vim"]
+	path = .vim/pack/banoris/start/logsyntax.vim
+	url = https://github.com/banoris/logsyntax.vim.git
