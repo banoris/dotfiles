@@ -7,6 +7,7 @@
     diverges1 = !sh -c 'git rev-list $(git rev-list --first-parent ^$1 $2| tail -n1)^^!'
     changed = show --pretty=\"format:\" --name-only
     st = status -sb
+    sta = status
     cl = clone
     ci = commit -v
     co = checkout
@@ -127,5 +128,5 @@
     tool = meld
 
 [user]
-	name = banoris
+	name = Badi Iskhand
 	email = banoris@protonmail.com
