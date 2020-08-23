@@ -7,3 +7,4 @@ mv .screenrc .screenrc.bak; ln -sf dotfiles/.screenrc ./
 mv .gdbinit .gdbinit.bak; ln -sf dotfiles/.gdbinit ./
 mv .vim .vim.bak; ln -sf dotfiles/.vim ./
 mv .seascope .seascope.bak; ln -sf dotfiles/.seascope ./
+mv .grc .grc.bak; ln -sf dotfiles/.grc ./

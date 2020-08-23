@@ -271,5 +271,5 @@ fi
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[[ -s "/etc/grc.bashrc" ]] && source /etc/grc.bashrc
+[[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
 
