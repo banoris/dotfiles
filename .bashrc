@@ -271,5 +271,5 @@ fi
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
+[[ -f ~/dotfiles/.grc/grc.bashrc ]] && source ~/dotfiles/.grc/grc.bashrc
 
