@@ -130,3 +130,5 @@
 [user]
 	name = Badi Iskhand
 	email = banoris@protonmail.com
+[credential "https://github.com"]
+	username = banoris
