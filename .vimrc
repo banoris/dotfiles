@@ -50,11 +50,6 @@ set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
 
-" FIXME: vim process stopped after running command
-"   Even vimdiff is broken
-" https://superuser.com/questions/646217/vim-process-stops-after-executing-an-external-command
-"set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
-
 " BEGIN good enough autocomplete setting {{{
 set omnifunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noinsert
@@ -69,9 +64,6 @@ function LoadDictionary()
         execute 'setlocal dict+='.file
     endfor
 endfunction
-
-"call plug#begin()
-"call plug#end()
 
 " automatically runs C-p in insert mode
 function! OpenCompletion()
