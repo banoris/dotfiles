@@ -7,6 +7,7 @@
     diverges1 = !sh -c 'git rev-list $(git rev-list --first-parent ^$1 $2| tail -n1)^^!'
     changed = show --pretty=\"format:\" --name-only
     st = status -sb
+    sta = status
     cl = clone
     ci = commit -v
     co = checkout
@@ -38,8 +39,9 @@
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     lc  = "!f() { git ll "$1"^.."$1"; }; f"
     lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
-    fl = log -u
-    filelog = log -p -M --follow
+    lp = log -p
+    # get full history changes for a file
+    lf = log -p -M --follow
     # }}}
     # diff {{{
     d = diff --word-diff
@@ -115,7 +117,9 @@
 
 [diff]
     tool = meld
+    # NOTE: Available from Git 2.11 (Q4 2016)
     wsErrorHighlight = all
+    algorithm = patience
 
 [difftool]
     prompt = false
@@ -123,3 +127,6 @@
 [mergetool]
     tool = meld
 
+[user]
+	name = Badi Iskhand
+	email = banoris@protonmail.com

@@ -147,6 +147,7 @@ export PATH=$PATH:$HOME/Android/Sdk/build-tools/27.0.1
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
 alias v='vim -p'
+alias v-='vim -'
 alias gvr='gvim --remote-tab'
 alias asdnoti='notify-send -t 0'
 alias install='sudo apt install'
@@ -198,12 +199,13 @@ if [ -f ~/.inputrc ]; then
     bind -f ~/.inputrc
 fi
 # TODO: check server or local machine, use diff color to remind that you are inside server's shell
-export PS1="\[\e[1;36m\][\u@\h \w]\$(parse_git_branch) \D{%a %H:%M}\n\$\[\e[m\] "
+export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(parse_git_branch)\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] "
 
 # less setting
 #export LESS='-XFR'
 # -R: remove the ESC\ color thingy, set this so color shows up nicely. -i: case-insensitive search
-export LESS='-iR'
+# -S: no wrap
+export LESS='-SiR'
 
 ### END mysetting }}}
 
@@ -236,7 +238,7 @@ function cpuz {
 # save cd history, type `dirs` to show directories
 # cd ~2  --> will cd to second directory in `dirs` output
 # TODO: fix `cd -` not working
-function c () {
+function cd1() {
 	if [ -e $1 ]
 	then 
 		pushd $1 &> /dev/null   #dont display current stack 
@@ -266,4 +268,8 @@ stty -ixon
 if [ -f ~/.proxy.sh ]; then
     . ~/.proxy.sh
 fi
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
 

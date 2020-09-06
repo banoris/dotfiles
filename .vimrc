@@ -49,15 +49,29 @@ set wildmenu
 set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
-set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
+
+" FIXME: vim process stopped after running command
+"   Even vimdiff is broken
+" https://superuser.com/questions/646217/vim-process-stops-after-executing-an-external-command
+"set shell=/bin/bash\ -i " so that you can use bash aliases inside vim e.g. :gr hello
 
 " BEGIN good enough autocomplete setting {{{
 set omnifunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noinsert
 " Add dictionary to autocomplete list https://vim.fandom.com/wiki/Dictionary_completions
 set complete+=k
-" Set dictionary based on filetype, e.g. *.java will load ~/.vim/dictionary/java.txt
-au FileType * execute 'setlocal dict+=~/.vim/dictionary/'.&filetype.'.txt'
+
+" Fill dictionary based on filetype,
+" e.g. *.java will load ~/.vim/dictionary/java/*.txt
+au FileType * call LoadDictionary()
+function LoadDictionary()
+    for file in split(glob('~/.vim/dictionary/'.&filetype.'/*.txt'), '\n')
+        execute 'setlocal dict+='.file
+    endfor
+endfunction
+
+"call plug#begin()
+"call plug#end()
 
 " automatically runs C-p in insert mode
 function! OpenCompletion()
@@ -70,9 +84,9 @@ autocmd InsertCharPre * call OpenCompletion()
 
 
 " Auto reload file like Sublime. https://unix.stackexchange.com/a/383044
-set autoread
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
-    \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+" set autoread
+" autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+"     \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 "autocmd FileChangedShellPost *
 "  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
@@ -82,13 +96,6 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
 set t_Co=256
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 hi Search     cterm=NONE ctermbg=yellow ctermfg=black
-
-" superb vimdiff https://vimways.org/2018/the-power-of-diff/
-" Change the diff algorithm to be sort of like in meld
-if v:version > 800
-	set diffopt+=algorithm:patience
-	set diffopt+=indent-heuristic
-endif
 
 " wrap lines without breaking words, list should be off for this feature
 " usage:  :wrap
@@ -104,7 +111,6 @@ set noswapfile
 
 
 " BEGIN key mapping {{{
-
 
 " Disable Ex mode when pressing Q
 nnoremap Q <nop>
@@ -156,6 +162,8 @@ map <C-j> <Esc>
 map <F8> <Esc>:w<CR>:!clear; gcc % -o %< && ./%<<CR>
 imap <F8> <Esc>:w<CR>:!clear; gcc % -o %< && ./%<<CR>
 
+" Shift-z-q quit a buffer, Shift z-w to quit all
+nnoremap <S-z><S-w> <Esc>:qa<CR>
 " END key mapping }}}
 
 let MRU_Max_Entries = 100
@@ -186,6 +194,22 @@ function LargeFile()
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
+
+" BEGIN vimdiff {{{
+
+" superb vimdiff https://vimways.org/2018/the-power-of-diff/
+" Change the diff algorithm to be sort of like in meld
+if v:version > 800
+	set diffopt+=algorithm:patience
+	set diffopt+=indent-heuristic
+endif
+
+" Refer demo https://github.com/banoris/dotfiles/issues/6
+hi DiffAdd      ctermfg=NONE          ctermbg=DarkGreen
+hi DiffChange   ctermfg=NONE          ctermbg=NONE
+hi DiffDelete   ctermfg=LightBlue     ctermbg=Red
+hi DiffText     ctermfg=Yellow        ctermbg=Blue
+" END vimdiff }}}
 
 " BEGIN gvim setting {{{
 
