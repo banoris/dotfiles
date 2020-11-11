@@ -4,3 +4,6 @@
 [submodule ".vim/pack/banoris/start/logsyntax.vim"]
 	path = .vim/pack/banoris/start/logsyntax.vim
 	url = https://github.com/banoris/logsyntax.vim.git
+[submodule ".vim/pack/banoris/start/haskell-vim"]
+	path = .vim/pack/banoris/start/haskell-vim
+	url = https://github.com/neovimhaskell/haskell-vim.git
