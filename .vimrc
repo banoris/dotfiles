@@ -156,6 +156,8 @@ let g:cpp_simple_highlight = 1
 " ========== BEGIN Autocomplete: LSP, basic dictionary {{{
 if has('nvim') " LSP setup
     set omnifunc=lsp#omnifun
+    packadd nvim-lspconfig
+    packadd completion-nvim
 
 lua<<EOF
 
@@ -173,10 +175,10 @@ nvim_lsp.jdtls.setup{
 
 EOF
 
-"lua require'nvim_lsp'.pyls.setup{on_attach=require'completion'.on_attach}
-"autocmd BufEnter * lua require'completion'.on_attach()
-"set completeopt=menuone
-"set omnifunc=v:lua.vim.lsp.omnifunc
+    "lua require'nvim_lsp'.pyls.setup{on_attach=require'completion'.on_attach}
+    "autocmd BufEnter * lua require'completion'.on_attach()
+    "set completeopt=menuone
+    "set omnifunc=v:lua.vim.lsp.omnifunc
 
     autocmd BufEnter * lua require'completion'.on_attach()
 
