@@ -7,3 +7,9 @@
 [submodule ".vim/pack/banoris/start/haskell-vim"]
 	path = .vim/pack/banoris/start/haskell-vim
 	url = https://github.com/neovimhaskell/haskell-vim.git
+[submodule ".vim/pack/banoris/opt/completion-nvim"]
+	path = .vim/pack/banoris/opt/completion-nvim
+	url = https://github.com/nvim-lua/completion-nvim.git
+[submodule ".vim/pack/banoris/opt/nvim-lspconfig"]
+	path = .vim/pack/banoris/opt/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig.git
