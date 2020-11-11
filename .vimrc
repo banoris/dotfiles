@@ -51,6 +51,10 @@ set wildmenu
 set mouse=a " enable mouse for easier highlight and copy
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
+" !!! EXTREME CAUTION HERE. Will disable the error when you open the same two files
+" But you'll no longer have the backup swp file
+" Please save after every little changes
+set noswapfile
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 hi Search     cterm=NONE ctermbg=yellow ctermfg=black
 colorscheme ron
