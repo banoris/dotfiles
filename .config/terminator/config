@@ -1,0 +1,103 @@
+[global_config]
+  dbus = False
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  geometry_hinting = True
+  inactive_color_offset = 1.0
+  scroll_tabbar = True
+  suppress_multiple_term_dialog = True
+[keybindings]
+  cycle_next = <Primary>Page_Down
+  cycle_prev = <Primary>Page_Up
+  next_tab = <Primary>Tab
+  prev_tab = <Primary><Shift>Tab
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+  [[my_layout]]
+    [[[child0]]]
+      fullscreen = False
+      last_active_window = True
+      maximised = False
+      order = 0
+      parent = ""
+      position = 3101:59
+      size = 1370, 785
+      title = examples
+      type = Window
+    [[[child1]]]
+      active_page = 0
+      labels = None, None, None, None, None, None
+      last_active_term = 69898867-b26d-46ec-94d3-36e08985a555, 91c509e3-4dbf-4819-8fea-abae6551ecd1, 35ff0165-5c0b-4cf8-96dc-843cb110b59e, 667ca466-00ec-4c13-8f75-b71c9c046f37, fb020853-52da-4d9b-8840-eef1d8280852, 6124fd14-ee72-4f8f-a813-a3f5eaca5e26
+      order = 0
+      parent = child0
+      type = Notebook
+    [[[child8]]]
+      fullscreen = False
+      last_active_term = 693089b7-92b0-4355-bacd-82ea35114e5d
+      last_active_window = False
+      maximised = False
+      order = 0
+      parent = ""
+      position = 1721:222
+      size = 814, 515
+      title = examples
+      type = Window
+    [[[terminal2]]]
+      order = 0
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 69898867-b26d-46ec-94d3-36e08985a555
+    [[[terminal3]]]
+      order = 1
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 91c509e3-4dbf-4819-8fea-abae6551ecd1
+    [[[terminal4]]]
+      order = 2
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 35ff0165-5c0b-4cf8-96dc-843cb110b59e
+    [[[terminal5]]]
+      order = 3
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 667ca466-00ec-4c13-8f75-b71c9c046f37
+    [[[terminal6]]]
+      order = 4
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = fb020853-52da-4d9b-8840-eef1d8280852
+    [[[terminal7]]]
+      order = 5
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 6124fd14-ee72-4f8f-a813-a3f5eaca5e26
+    [[[terminal9]]]
+      order = 0
+      parent = child8
+      profile = default
+      type = Terminal
+      uuid = 693089b7-92b0-4355-bacd-82ea35114e5d
+[plugins]
+[profiles]
+  [[default]]
+    copy_on_selection = True
+    cursor_blink = False
+    cursor_color = "#aaaaaa"
+    font = DejaVu Sans Mono 13
+    foreground_color = "#ffffff"
+    show_titlebar = False
+    use_system_font = False
+
