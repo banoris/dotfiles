@@ -9,7 +9,7 @@
     st = status -sb
     sta = status
     cl = clone
-    ci = commit -v
+    cv = commit -v
     co = checkout
     br = branch
     r = reset
@@ -30,6 +30,7 @@
     cma = commit -a -m
     ca = commit --amend
     amend = commit --amend
+    can = commit --amend --no-edit
     caa = commit -a --amend -C HEAD
     # }}}
     # log commands {{{
@@ -128,7 +129,10 @@
     tool = meld
 
 [user]
-	name = Badi Iskhand
+	name = Badiuzzaman Iskhandar
 	email = banoris@protonmail.com
 [credential "https://github.com"]
 	username = banoris
+
+[core]
+	editor = $HOME/.local/bin/nvim
