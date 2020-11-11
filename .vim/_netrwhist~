@@ -1,7 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/nfs/png/disks/png_cnplp_00140/CNPLP_A1_WW47.4_FUSE_SKU/target/fc/aceroot'
-let g:netrw_dirhist_2='/nfs/png/stod/stod0026/w.biskhand.101/ICPLP_WW43.5_FUSE_LVL0_FULL/verif/tb/env/cfg'
-let g:netrw_dirhist_3='/tmp/biskhand/ICP/ICPLP_WW48.2_sstrap_regi_turnin/verif/tb/seqlib/regi'
-let g:netrw_dirhist_4='/nfs/png/stod/stod0027/w.biskhand.103/CNPH_WW48.1_EDBC_testing/verif/tests/exi/pch_exi_boot_stallbypass_test'
-let g:netrw_dirhist_5='/nfs/png/stod/stod0027/w.biskhand.103/CNPH_WW48.1_EDBC_testing/verif/tb/seqlib/regi'
