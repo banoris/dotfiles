@@ -144,10 +144,13 @@ export CCACHE_DIR=$HOME/.cache
 export ANDROID_ADB_SERVER_PORT=5037  # 5037 prob when reflashing
 export PATH=$PATH:$HOME/Android/Sdk/build-tools/27.0.1
 
+# Haskell cabal, ghc
+export PATH=$PATH:/opt/ghc/bin/
+
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
-alias v='vim -p'
-alias v-='vim -'
+alias v='nvim -p'
+alias v-='nvim -'
 alias gvr='gvim --remote-tab'
 alias asdnoti='notify-send -t 0'
 alias install='sudo apt install'
@@ -226,7 +229,7 @@ function dluz {
 }
 
 # cp and unzip $1 to $2
-function cpuz {
+cpuz() {
 	echo 'Copying........'
 	cp $1 $2;
 	echo 'cp done, unzipping...'
@@ -235,18 +238,30 @@ function cpuz {
 	noti CP_UNZIP_COMPLETE;
 }
 
-# save cd history, type `dirs` to show directories
-# cd ~2  --> will cd to second directory in `dirs` output
-# TODO: fix `cd -` not working
-function cd1() {
-	if [ -e $1 ]
-	then 
-		pushd $1 &> /dev/null   #dont display current stack 
+# zsh style cd
+# https://gist.github.com/saagarjha/f9e9186479975d36dc18b15a87849205
+# cd -h # list history
+# cd -<n> # pick the nth item from history
+cd() {
+	# Set the current directory to the 0th history item
+	cd_history[0]=$PWD
+	if [[ $1 == -h ]]; then
+		for i in ${!cd_history[@]}; do
+			echo $i: "${cd_history[$i]}"
+		done
+		return
+	elif [[ $1 =~ ^-[0-9]+ ]]; then
+		builtin cd "${cd_history[${1//-}]}" || # Remove the argument's dash
+		return
+	else
+		builtin cd "$@" || return # Bail if cd fails
 	fi
+	# cd_history = ["", $OLDPWD, cd_history[1:]]
+	cd_history=("" "$OLDPWD" "${cd_history[@]:1:${#cd_history[@]}}")
 }
 
 # function to set terminal title (gnome-terminal)
-function set-title(){
+set-title(){
   if [[ -z "$ORIG" ]]; then
     ORIG=$PS1
   fi
@@ -257,9 +272,9 @@ function set-title(){
 ### END bashfunction }}}
 
 # enable autojump -- https://github.com/wting/autojump
-if [ -e /usr/share/autojump/autojump.sh ]; then
-	. /usr/share/autojump/autojump.sh
-fi
+# if [ -e /usr/share/autojump/autojump.sh ]; then
+# 	. /usr/share/autojump/autojump.sh
+# fi
 
 # enable forward search in bash  https://stackoverflow.com/questions/791765/unable-to-forward-search-bash-history-similarly-as-with-ctrl-r
 stty -ixon
@@ -270,6 +285,9 @@ if [ -f ~/.proxy.sh ]; then
 fi
 
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -f ~/dotfiles/.grc/grc.bashrc ]] && source ~/dotfiles/.grc/grc.bashrc
+if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UUID}"; fi
 
+# latex
+export PATH=$PATH:/usr/local/texlive/2020/bin/x86_64-linux
