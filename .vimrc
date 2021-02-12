@@ -65,11 +65,11 @@ colorscheme ron
 command! -nargs=* Wrap set wrap linebreak nolist
 
 " Auto highlight word under cursor. Not enabled by default, run cmd :HL
-command! -nargs=* HL autocmd CursorMoved * exe printf('match Underlined /\V\<%s\>/', escape(expand('<cword>'), '/\')) 
+command! -nargs=* HL autocmd CursorMoved * exe printf('match Underlined /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " ============= END custom command }}}
 
-" ========================== BEGIN key mapping {{{
+" ========================== BEGIN keyboard mapping {{{
 " Disable Ex mode when pressing Q
 nnoremap Q <nop>
 " open ctag file symbol under cursor
@@ -82,10 +82,10 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 " center screen in search
 nnoremap n nzz
 nnoremap N Nzz
-nnoremap <Leader>n :tabnew 
+nnoremap <Leader>n :tabnew
 " Copy current buffer path relative to root of VIM session to system clipboard
 nnoremap <Leader>yp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
-" Copy file full path 
+" Copy file full path
 nnoremap <Leader>yfp :let @*=expand("%:p")<cr>:echo "Copied full file path to clipboard"<cr>
 " Copy from cursor to EOL without \n character
 nnoremap Y vg_y:echo "Copy success"<cr>
@@ -98,7 +98,7 @@ nnoremap > gv>
 nnoremap < gv<
 
 " Scroll 20 characters to the right
-" Scroll 20 characters to the left  
+" Scroll 20 characters to the left
 nnoremap <C-h> 20zh
 nnoremap <C-l> 20zl
 " Ctrl-c copy to system clipboard
@@ -134,11 +134,16 @@ if has('nvim')
     nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
     nnoremap <silent> <F5>    <cmd>lua vim.lsp.buf.formatting()<CR>
 endif
+
+" Terminal setting.
+tnoremap <C-j> <C-\><C-n>
+
 " ======================== END key mapping }}}
 
 
 " ========= BEGIN misc plugin setting {{{
-"
+
+" vim-haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
@@ -147,8 +152,11 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
+" luochen1990/rainbow
+let g:rainbow_active = 1
+
 " enable tree in file explorer
-let g:netrw_liststyle=3 
+let g:netrw_liststyle=3
 
 let MRU_Max_Entries = 100
 
@@ -157,7 +165,7 @@ let g:cpp_simple_highlight = 1
 
 " ========= END misc plugin setting {{{
 
-" ========== BEGIN Autocomplete: LSP, basic dictionary {{{
+" ========== BEGIN Autocomplete: LSP, basic dictionary, syntax {{{
 if has('nvim') " LSP setup
     set omnifunc=lsp#omnifun
     packadd nvim-lspconfig
@@ -220,6 +228,9 @@ endfunction
 
 autocmd InsertCharPre * call OpenCompletion()
 
+" bnfc grammar file is somewhat similar to haskell
+au BufRead,BufNewFile *.cf setfiletype haskell
+
 " ============= END autocomplete }}}
 
 " =========== BEGIN vimdiff {{{
@@ -256,7 +267,7 @@ endif
 " Opening Large file configuration for better performance
  " file is large than 10mb
 let g:LargeFile = 1024 * 1024 * 10
-augroup LargeFile 
+augroup LargeFile
     autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
 augroup END
 
@@ -272,3 +283,4 @@ function LargeFile()
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
+

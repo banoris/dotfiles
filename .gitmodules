@@ -13,3 +13,6 @@
 [submodule ".vim/pack/banoris/opt/nvim-lspconfig"]
 	path = .vim/pack/banoris/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig.git
+[submodule ".vim/pack/banoris/start/rainbow"]
+	path = .vim/pack/banoris/start/rainbow
+	url = https://github.com/luochen1990/rainbow.git
