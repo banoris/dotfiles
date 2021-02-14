@@ -16,3 +16,6 @@
 [submodule ".vim/pack/banoris/start/rainbow"]
 	path = .vim/pack/banoris/start/rainbow
 	url = https://github.com/luochen1990/rainbow.git
+[submodule "modules/grc"]
+	path = modules/grc
+	url = https://github.com/garabik/grc.git
