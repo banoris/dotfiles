@@ -286,7 +286,12 @@ fi
 
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
-[[ -f ~/dotfiles/.grc/grc.bashrc ]] && source ~/dotfiles/.grc/grc.bashrc
+#[[ -f ~/dotfiles/.grc/grc.bashrc ]] && source ~/dotfiles/.grc/grc.bashrc
+
+# Introduce lots of alias tools like `make`, `du`.
+# Careful with this...
+[[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
+
 if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UUID}"; fi
 
 # latex
