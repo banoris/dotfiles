@@ -149,8 +149,13 @@ export PATH=$PATH:/opt/ghc/bin/
 
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
-alias v='nvim -p'
-alias v-='nvim -'
+if [[ -n $(which nvim) ]]; then
+    alias v='nvim -p'
+    alias v-='nvim -'
+else
+    alias v='vim -p'
+    alias v-='vim -'
+fi
 alias gvr='gvim --remote-tab'
 alias asdnoti='notify-send -t 0'
 alias install='sudo apt install'
@@ -183,6 +188,8 @@ PROMPT_COMMAND='echo -ne "\033]0;$(basename ${PWD})\007"' # display only current
 export SER1=R1J56L64e0f8df
 export SER2=R1J56L68fb9966
 export SER3=R1J56L2006cc32
+# bash C-x C-e editor, default is nano
+export VISUAL=vi
 
 ### END variables }}}
 
@@ -292,7 +299,11 @@ fi
 # Careful with this...
 [[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
 
+# Save history for each terminator tab. So opening the same terminator layout,
+# will reload the same history
 if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UUID}"; fi
+
+[[ -f ~/.bash_tmux_completion ]] && source ~/.bash_tmux_completion
 
 # latex
 export PATH=$PATH:/usr/local/texlive/2020/bin/x86_64-linux

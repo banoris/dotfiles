@@ -22,3 +22,13 @@ git clone --recurse-submodules <url>
 # Or if you already cloned and forgot the --recurse-submodules flag
 git submodule update --init --recursive
 ```
+
+## Cheatsheet
+```
+# list all group
+getent group
+
+# Install latest-n-greatest vim to ~/.local/bin
+git clone https://github.com/vim/vim.git && cd vim && ./configure --prefix=$HOME/.local && make && make install
+
+```

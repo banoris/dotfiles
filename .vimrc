@@ -166,6 +166,7 @@ let g:cpp_simple_highlight = 1
 " ========= END misc plugin setting {{{
 
 " ========== BEGIN Autocomplete: LSP, basic dictionary, syntax {{{
+" Refer https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 if has('nvim') " LSP setup
     set omnifunc=lsp#omnifun
     packadd nvim-lspconfig
@@ -175,15 +176,15 @@ lua<<EOF
 
 vim.cmd('packadd nvim-lspconfig')
 vim.cmd('packadd completion-nvim')
-local nvim_lsp = require'nvim_lsp'
-nvim_lsp.pyls.setup{
-    root_dir = nvim_lsp.util.root_pattern('.git');
-}
-
-nvim_lsp.jdtls.setup{
-    root_dir = nvim_lsp.util.root_pattern('.git');
-    on_attach=require'completion'.on_attach;
-}
+-- local nvim_lsp = require'nvim_lsp'
+-- nvim_lsp.pyls.setup{
+--     root_dir = nvim_lsp.util.root_pattern('.git');
+-- }
+-- 
+-- nvim_lsp.jdtls.setup{
+--     root_dir = nvim_lsp.util.root_pattern('.git');
+--     on_attach=require'completion'.on_attach;
+-- }
 
 EOF
 

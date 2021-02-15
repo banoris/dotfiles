@@ -12,6 +12,7 @@ cd $HOME
 [[ -f .gdbinit ]]   && mv .gdbinit .gdbinit.bak; ln -sf dotfiles/.gdbinit ./
 [[ -f .vim ]]       && mv .vim .vim.bak; ln -sf dotfiles/.vim ./
 [[ -f .seascope ]]  && mv .seascope .seascope.bak; ln -sf dotfiles/.seascope ./
+[[ -f .bash_tmux_completion ]]  && mv .bash_tmux_completion .bash_tmux_completion.bak; ln -sf dotfiles/.bash_tmux_completion ./
 
 # setup grc
 echo "===== Setup grc ====="
