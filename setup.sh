@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-set -Eeuo pipefail
-trap cleanup SIGINT SIGTERM ERR EXIT
+# set -Eeuo pipefail
+# trap cleanup SIGINT SIGTERM ERR EXIT
 
 cd $HOME
 [[ -f .bashrc ]]    && mv .bashrc .bashrc.bak; ln -sf dotfiles/.bashrc ./
@@ -16,12 +16,13 @@ cd $HOME
 
 # setup grc
 echo "===== Setup grc ====="
-[[ -f ~/.grc ]] && mv grc grc.bak
-mkdir ~/.grc
+[[ -d ~/.grc ]] && mv .grc .grc.bak
+[[ ! -d ~/.grc ]] && mkdir ~/.grc
+[[ ! -d $HOME/.local/bin ]] && mkdir -p $HOME/.local/bin
 cd $HOME/dotfiles/modules/grc/
 cp grc grcat ~/.local/bin/    # cp executables
 cp colourfiles/conf.* ~/.grc/ # cp tools' conf files
 cp grc.conf ~/.grc/           # grcat conf files
-cp grc.bashrc ~/grc.bashrc    # setup auto alias for bash
+cp grc.bashrc ~/.grc/    # setup auto alias for bash
 
 echo DONE
