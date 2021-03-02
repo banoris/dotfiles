@@ -49,6 +49,8 @@ set wildmenu
 "set path+=**
 "set path+=*
 set mouse=a " enable mouse for easier highlight and copy
+" https://stackoverflow.com/questions/359109/using-the-scrollwheel-insert-gnu-screen
+"set ttymouse=xterm2
 set tabpagemax=100  " default max_tab=10, increase it
 set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileName>
 " !!! EXTREME CAUTION HERE. Will disable the error when you open the same two files
@@ -82,7 +84,7 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 " center screen in search
 nnoremap n nzz
 nnoremap N Nzz
-nnoremap <Leader>n :tabnew
+nnoremap <Leader>n :tabnew 
 " Copy current buffer path relative to root of VIM session to system clipboard
 nnoremap <Leader>yp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
 " Copy file full path
@@ -121,7 +123,8 @@ imap <F8> <Esc>:w<CR>:!clear; gcc % -o %< && ./%<<CR>
 " Shift-z-q quit a buffer, Shift z-w to quit all
 nnoremap <S-z><S-w> <Esc>:qa<CR>
 
-if has('nvim')
+" if has('nvim')
+if 0
     " https://github.com/neovim/neovim/blob/master/runtime/doc/lsp.txt#L44
     nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
     nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -166,8 +169,10 @@ let g:cpp_simple_highlight = 1
 " ========= END misc plugin setting {{{
 
 " ========== BEGIN Autocomplete: LSP, basic dictionary, syntax {{{
+" TODO: LSP setup is messy...
 " Refer https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
-if has('nvim') " LSP setup
+" if has('nvim')
+if 0
     set omnifunc=lsp#omnifun
     packadd nvim-lspconfig
     packadd completion-nvim

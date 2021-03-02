@@ -146,6 +146,10 @@ export PATH=$PATH:$HOME/Android/Sdk/build-tools/27.0.1
 
 # Haskell cabal, ghc
 export PATH=$PATH:/opt/ghc/bin/
+# latex
+export PATH=$PATH:/usr/local/texlive/2020/bin/x86_64-linux
+
+export PATH=$HOME/.local/bin:$PATH
 
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
@@ -168,6 +172,7 @@ alias asdbashrc='source ~/.bashrc'
 alias dirs='dirs -v'
 alias h='history | cut -c 8- | v -' # cut is to remove the numbers in history
 alias gr='grep -srnI'
+alias fgr='find | grep'
 alias datelog='date +"%Y_%b_%d_%H_%M"'
 alias cd2="cd ../.."
 alias cd3="cd ../../.."
@@ -178,6 +183,8 @@ alias adb1='adb -s R1J56L64e0f8df'
 alias adb2='adb -s R1J56L68fb9966'
 alias adb21='adb -s R1J56L32b70674'
 alias parallel='parallel --will-cite'
+
+alias xc='xargs echo -n | xclip -selection c'
 
 # END alias }}}
 
@@ -304,6 +311,5 @@ fi
 if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UUID}"; fi
 
 [[ -f ~/.bash_tmux_completion ]] && source ~/.bash_tmux_completion
+[[ -f ~/dotfiles/.git-completion.bash ]] && source ~/dotfiles/.git-completion.bash
 
-# latex
-export PATH=$PATH:/usr/local/texlive/2020/bin/x86_64-linux

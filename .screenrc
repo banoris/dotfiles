@@ -54,7 +54,15 @@ altscreen on
 bindkey ';5D' prev
 bindkey ';5C' next
 
+# https://stackoverflow.com/questions/113427/how-to-clear-the-startcrollback-in-the-screen-command
+bind '/' eval "clear" "scrollback 0" "scrollback 15000"
+
+# C-a Shift-R to reload screen config
+bind R eval "source $HOME/.screenrc" "echo '.screenrc reloaded!'"
+
+# Bind escape to Ctrl-spacebar
+# escape ^@a
+
+# C-b
+escape ^Bb
 # bindkey END  }}}
-
-
-### End URL
