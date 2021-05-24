@@ -151,6 +151,12 @@ export PATH=$PATH:/usr/local/texlive/2020/bin/x86_64-linux
 
 export PATH=$HOME/.local/bin:$PATH
 
+# Clang, llvm
+export PATH=$PATH:$HOME/LLVM_10.0.1/bin
+
+# Golang
+export PATH=$PATH:$HOME/go/bin
+
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
 if [[ -n $(which nvim) ]]; then
@@ -184,7 +190,9 @@ alias adb2='adb -s R1J56L68fb9966'
 alias adb21='adb -s R1J56L32b70674'
 alias parallel='parallel --will-cite'
 
-alias xc='xargs echo -n | xclip -selection c'
+# Copy to primary clipboard. E.g.: $ realpath /some/path | xc
+alias xc="xargs echo -n | xclip -selection c"
+alias psgrep="ps -ef | grep "
 
 # END alias }}}
 
@@ -264,6 +272,9 @@ cd() {
 			echo $i: "${cd_history[$i]}"
 		done
 		return
+    # list path in pager instead of stdout
+    elif [[ $1 == "-hh" ]]; then
+        printf "%s\n" "${cd_history[@]}" | less -N
 	elif [[ $1 =~ ^-[0-9]+ ]]; then
 		builtin cd "${cd_history[${1//-}]}" || # Remove the argument's dash
 		return
