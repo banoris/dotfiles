@@ -4,7 +4,12 @@ if(! $?prompt) then
     exit
 endif
 
+
 # ===== BEGIN misc {{{
+
+# https://github.com/marckhouzam/tcsh-completion
+#   Setup this to use bash completion inside tcsh
+source ${HOME}/.tcsh-completion.tcsh
 
 # ignorecase autocomplete
 set autolist = ambiguous 
@@ -38,7 +43,7 @@ setenv LESS '-SiR'
 
 # ===== BEGIN alias {{{
 
-alias precmd 'printf "\033]0;`basename ${PWD}`\007"' # display only current dir as title
+alias precmd 'printf "\033]0;`bash $HOME/dotfiles/get-pwd-shortform.bash`\007"' # display current dir as title
 
 # some more ls aliases
 alias ll 'ls -ahlF'
