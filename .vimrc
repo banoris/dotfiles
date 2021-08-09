@@ -21,6 +21,7 @@ set ignorecase
 filetype indent on
 set showmatch
 "set incsearch
+set noincsearch
 set hlsearch
 " http://vim.wikia.com/wiki/Accessing_the_system_clipboard Seems ok?
 " This will DISABLE autocopy on visual. E.g. using VNC, highlight using mouse,
@@ -59,7 +60,8 @@ set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileNam
 set noswapfile
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
 hi Search     cterm=NONE ctermbg=yellow ctermfg=black
-colorscheme ron
+
+colorscheme elflord
 
 " ============= BEGIN custom command {{{
 " wrap lines without breaking words, list should be off for this feature
@@ -271,15 +273,15 @@ endif
 " ========= Uncategorized stuff ======
 
 " Opening Large file configuration for better performance
- " file is large than 10mb
-let g:LargeFile = 1024 * 1024 * 10
+ " file is large than 7Mb
+let g:LargeFile = 1024 * 1024 * 7
 augroup LargeFile
     autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
 augroup END
 
 function LargeFile()
     " no syntax highlighting etc
-    " set eventignore+=FileType  " acerun don't have any syntax?
+    set eventignore+=FileType
     " save memory when other file is viewed
     setlocal bufhidden=unload
     " is read-only (write with :w new_filename)

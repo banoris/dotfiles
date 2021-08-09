@@ -92,14 +92,6 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
-alias ll='ls -ahlF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -159,6 +151,16 @@ export PATH=$PATH:$HOME/go/bin
 
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
+
+# some more ls aliases
+alias ll='ls -ahlF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 if [[ -n $(which nvim) ]]; then
     alias v='nvim -p'
     alias v-='nvim -'
@@ -178,7 +180,6 @@ alias asdbashrc='source ~/.bashrc'
 alias dirs='dirs -v'
 alias h='history | cut -c 8- | v -' # cut is to remove the numbers in history
 alias gr='grep -srnI'
-alias fgr='find | grep'
 alias datelog='date +"%Y_%b_%d_%H_%M"'
 alias cd2="cd ../.."
 alias cd3="cd ../../.."
@@ -294,6 +295,16 @@ set-title(){
   PS1=${ORIG}${TITLE}
 }
 
+fgr() {
+    # Usage: fgr [/some/folder/] <filename>
+    #   find | grep combo shorthand, uses this a lot!
+	if [ -n ${2} ]; then
+        find ${1} | grep ${2}
+    else
+        find | grep ${1}
+    fi
+}
+
 ### END bashfunction }}}
 
 # enable autojump -- https://github.com/wting/autojump
@@ -323,4 +334,5 @@ if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UU
 
 [[ -f ~/.bash_tmux_completion ]] && source ~/.bash_tmux_completion
 [[ -f ~/dotfiles/.git-completion.bash ]] && source ~/dotfiles/.git-completion.bash
+[[ -f ~/dotfiles/.kubectl-completion.bash ]] && source ~/dotfiles/.kubectl-completion.bash
 

@@ -32,3 +32,11 @@ getent group
 git clone https://github.com/vim/vim.git && cd vim && ./configure --prefix=$HOME/.local && make && make install
 
 ```
+
+## gnome-terminal
+
+Change prev/next tab hotkey to to Ctrl-Tab, Ctrl-Shift-Tab, common hotkey in tabbed interface. Refer https://askubuntu.com/questions/133384/keyboard-shortcut-gnome-terminal-ctrl-tab-and-ctrl-shift-tab-in-12-04
+```
+gsettings set org.gnome.Terminal.Legacy.Keybindings:/org/gnome/terminal/legacy/keybindings/ next-tab '<Primary>Tab'
+gsettings set org.gnome.Terminal.Legacy.Keybindings:/org/gnome/terminal/legacy/keybindings/ prev-tab '<Primary><Shift>Tab'
+```

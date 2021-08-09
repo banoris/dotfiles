@@ -119,6 +119,9 @@
     ignore = update-index --assume-unchanged
     ignore-no = update-index --no-assume-unchanged
 
+[submodule]
+    fetchJobs = 4
+
 [diff]
     tool = meld
     # NOTE: Available from Git 2.11 (Q4 2016)
