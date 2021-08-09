@@ -1,0 +1,90 @@
+
+# If not running interactively, don't do anything
+if(! $?prompt) then
+    exit
+endif
+
+# ===== BEGIN misc {{{
+
+# ignorecase autocomplete
+set autolist = ambiguous 
+# TODO: good???
+set complete = enhance 
+
+# Disable CTRL-s, use it for fwd search instead. Refer https://stackoverflow.com/a/791800
+stty -ixon
+bindkey "^R" i-search-back
+bindkey "^s" i-search-fwd
+
+# ===== END misc }}}
+
+# ===== BEGIN vars {{{
+set path = ( $HOME/.local/bin $path )
+set path = ( /app/vbuild/sys/meld/1.8.4/bin \
+                /app/vbuild/sys/sublime_text/3.2.2/bin \
+                $path )
+
+#set path = ( $path /proj/sgsn-tools/wh/tools/RHE64-7/otp/23.2.7.4/bin )
+
+# NOTE: any env issue messing with $prompt?
+#   \"\$" -- this blackmagic format is for $ sign!
+if ( "$prompt" !~ "*\n*" ) then
+    set prompt = "$prompt%B%~ %T\n\"\$"%b "
+#"
+endif
+
+setenv LESS '-SiR'
+# ===== END vars }}}
+
+# ===== BEGIN alias {{{
+
+alias precmd 'printf "\033]0;`basename ${PWD}`\007"' # display only current dir as title
+
+# some more ls aliases
+alias ll 'ls -ahlF'
+alias la 'ls -A'
+alias l 'ls -CF'
+
+# localdev setting, eg. set erlang runtime
+alias mysetting "set path = ( $path /proj/sgsn-tools/wh/tools/RHE64-7/otp/23.2.7.4/bin/ )"
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert 'notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+if ( `where nvim` != "" ) then
+    alias v 'nvim -p'
+    alias v- 'nvim -'
+else
+    alias v 'vim -p'
+    alias v- 'vim -'
+endif
+
+alias gvr 'gvim --remote-tab'
+alias asdnoti 'notify-send -t 0'
+alias install 'sudo apt install'
+alias grep 'grep --color=auto'
+alias asdsshfast 'ssh -XC -c blowfish-cbc,arcfour'
+alias noti 'notify-send -t 0'
+alias dl 'wget --no-check-certificate --user=eiskbad --ask-password'
+alias asdbashrc 'source ~/.bashrc'
+alias dirs 'dirs -v'
+alias h 'history | cut -c 8- | v -' # cut is to remove the numbers in history
+alias gr 'grep -srnI'
+# tcsh doesn't have function, and multiline alias with if-else seems very complicated
+#   Use this solution instead https://stackoverflow.com/a/27807461/11548113
+alias fgr 'source $HOME/dotfiles/tcsh/fgr.tcsh'
+alias datelog 'date +"%Y_%b_%d_%H_%M"'
+alias cd2 "cd ../.."
+alias cd3 "cd ../../.."
+alias cd4 "cd ../../../.."
+alias cd5 "cd ../../../../.."
+
+alias parallel 'parallel --will-cite'
+
+# Copy to primary clipboard. E.g.: $ realpath /some/path | xc
+alias xc "xargs echo -n | xclip -selection c"
+alias psgrep "ps -ef | grep "
+
+# ===== END alias }}}
+
