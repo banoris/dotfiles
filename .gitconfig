@@ -134,11 +134,12 @@
 [mergetool]
     tool = meld
 
-[user]
-	name = Badiuzzaman Iskhandar
-	email = banoris@protonmail.com
-[credential "https://github.com"]
-	username = banoris
+# NOTE: user/email config for personal github. Pick accordingly.
+#       includeIf requires git v2.13+
+#[includeIf "gitdir:~/path/to/personal/repo"]
+#    path = ~/dotfiles/personal.gitconfig
+#[include]
+#    path = ~/dotfiles/personal.gitconfig
 
 [core]
-	editor = $HOME/.local/bin/nvim
+	editor = ~/.local/bin/nvim

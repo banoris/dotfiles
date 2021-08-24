@@ -322,11 +322,10 @@ fi
 
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
-#[[ -f ~/dotfiles/.grc/grc.bashrc ]] && source ~/dotfiles/.grc/grc.bashrc
 
 # Introduce lots of alias tools like `make`, `du`.
-# Careful with this...
-[[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
+# Careful with this... Some issues, disable for now
+# [[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
 
 # Save history for each terminator tab. So opening the same terminator layout,
 # will reload the same history

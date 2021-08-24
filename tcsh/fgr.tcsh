@@ -5,7 +5,7 @@
 # Usage: fgr [/some/folder/] <filename>
 
 if ($#argv == 2) then
-    find $argv[1] | grep $argv[2]
+    find $argv[1] | grep -i $argv[2]
 else
-    find | grep $argv[1]
+    find | grep -i $argv[1]
 endif

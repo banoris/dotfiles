@@ -64,9 +64,10 @@ hi Search     cterm=NONE ctermbg=yellow ctermfg=black
 colorscheme elflord
 
 " ============= BEGIN custom command {{{
-" wrap lines without breaking words, list should be off for this feature
-" usage:  :wrap
-command! -nargs=* Wrap set wrap linebreak nolist
+" wrap lines without breaking words, list should be off for this feature.
+" Also use 'breakindent' to get like vscode deepIndent
+" usage:  :Wrap
+command! -nargs=* Wrap set wrap linebreak nolist breakindent breakindentopt=shift:2
 
 " Auto highlight word under cursor. Not enabled by default, run cmd :HL
 command! -nargs=* HL autocmd CursorMoved * exe printf('match Underlined /\V\<%s\>/', escape(expand('<cword>'), '/\'))
