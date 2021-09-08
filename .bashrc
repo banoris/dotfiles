@@ -113,22 +113,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# fuzzy bash completion {
-#source ~/fuzzy_bash_completion/fuzzy_bash_completion
-#fuzzy_replace_filedir_xspec
-# }
-
-# OpenGrok setting
-#export CATALINA_HOME=/usr/share/tomcat8/
-#export OPENGROK_TOMCAT_BASE=$CATALINA_HOME
-#export OPENGROK_INSTANCE_BASE=/home/biskhand/opengrok/test/local_src
-##export OPENGROK_INSTANCE_BASE=/home/biskhand/opengrok/test/android_src
-#export PATH=$PATH:/home/biskhand/opengrok/opengrok-1.0/bin
-
 set -o ignoreeof # disable CTRL-D to close terminal
 
-# Perforce setting
-export PATH=$PATH:/opt/perforce/p4v-2017.3.1592764/bin
 # android setting
 export PATH=$PATH:$HOME/bin
 export USE_CCACHE=1
@@ -178,7 +164,7 @@ alias noti='notify-send -t 0'
 alias dl='wget --no-check-certificate --user=biskhand --ask-password'
 alias asdbashrc='source ~/.bashrc'
 alias dirs='dirs -v'
-alias h='history | cut -c 8- | v -' # cut is to remove the numbers in history
+alias h='history | cut -c 8- | v -' # `cut` removes the line numbers in history
 alias gr='grep -srnI'
 alias datelog='date +"%Y_%b_%d_%H_%M"'
 alias cd2="cd ../.."
@@ -265,6 +251,7 @@ cpuz() {
 # https://gist.github.com/saagarjha/f9e9186479975d36dc18b15a87849205
 # cd -h # list history
 # cd -<n> # pick the nth item from history
+# TODO:feature: avoid duplicate folders. Use set datastructure with LRU?
 cd() {
 	# Set the current directory to the 0th history item
 	cd_history[0]=$PWD
@@ -298,11 +285,27 @@ set-title(){
 fgr() {
     # Usage: fgr [/some/folder/] <filename>
     #   find | grep combo shorthand, uses this a lot!
-	if [ -n ${2} ]; then
-        find ${1} | grep ${2}
+	if [ -n "${2}" ]; then
+        find ${1} | grep -i ${2}
     else
-        find | grep ${1}
+        find | grep -i ${1}
     fi
+}
+
+# Wrap make to automatically write to a logfile
+# What happen for chained command? E.g., `gmake target1 && gmake target2`
+# If the 1st completes quickly, then $filename_ will be the same, thus
+# writing to the same file
+gmake() {
+    # e.g. filename, asd_08-31_1038-39.log
+    local filename_="asd_$(date +"%m-%d_%H%M-%S").log"
+    echo "================================================" >> $filename_
+    echo "START=$(date --iso-8601=seconds)" |& tee -a $filename_
+    echo "CMD=gmake $*" |& tee -a $filename_
+    command gmake $* |& tee -a $filename_
+    echo "END=$(date --iso-8601=seconds)" |& tee -a $filename_
+    echo "Logfile path: $filename_"
+    echo "================================================" >> $filename_
 }
 
 ### END bashfunction }}}
@@ -315,14 +318,6 @@ fgr() {
 # enable forward search in bash  https://stackoverflow.com/questions/791765/unable-to-forward-search-bash-history-similarly-as-with-ctrl-r
 stty -ixon
 
-
-if [ -f ~/.proxy.sh ]; then
-    . ~/.proxy.sh
-fi
-
-
-[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
-
 # Introduce lots of alias tools like `make`, `du`.
 # Careful with this... Some issues, disable for now
 # [[ -f ~/.grc/grc.bashrc ]] && source ~/.grc/grc.bashrc
@@ -331,7 +326,11 @@ fi
 # will reload the same history
 if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UUID}"; fi
 
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -f ~/.bash_tmux_completion ]] && source ~/.bash_tmux_completion
 [[ -f ~/dotfiles/.git-completion.bash ]] && source ~/dotfiles/.git-completion.bash
 [[ -f ~/dotfiles/.kubectl-completion.bash ]] && source ~/dotfiles/.kubectl-completion.bash
+
+# Project specific setting
+[[ -f ~/dotfiles-eric/.bashrc.eric ]] && source ~/dotfiles-eric/.bashrc.eric
 
