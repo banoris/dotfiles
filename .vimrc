@@ -41,7 +41,8 @@ set backspace=2 "make backspace work like other apps
 set laststatus=2 "Set statusline to always visible
 set statusline=%f         " Path to the file
 set statusline+=%=        " Switch to the right side
-set statusline+=%l        " Current line
+set statusline+=col:%c    " Column
+set statusline+=\ %l        " Current line
 set statusline+=/         " Separator
 set statusline+=%L        " Total lines
 set wildmode=longest:list,full  " bash like filename tab completion
