@@ -19,3 +19,6 @@
 [submodule "modules/grc"]
 	path = modules/grc
 	url = https://github.com/garabik/grc.git
+[submodule ".vim/pack/banoris/start/yang.vim"]
+	path = .vim/pack/banoris/start/yang.vim
+	url = https://github.com/nathanalderson/yang.vim.git
