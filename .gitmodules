@@ -22,3 +22,6 @@
 [submodule ".vim/pack/banoris/start/yang.vim"]
 	path = .vim/pack/banoris/start/yang.vim
 	url = https://github.com/nathanalderson/yang.vim.git
+[submodule "ble.sh"]
+	path = ble.sh
+	url = https://github.com/akinomyoga/ble.sh.git
