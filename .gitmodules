@@ -25,3 +25,6 @@
 [submodule "ble.sh"]
 	path = ble.sh
 	url = https://github.com/akinomyoga/ble.sh.git
+[submodule ".vim/pack/banoris/opt/indent-blankline.nvim"]
+	path = .vim/pack/banoris/opt/indent-blankline.nvim
+	url = https://github.com/lukas-reineke/indent-blankline.nvim.git
