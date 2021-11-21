@@ -28,3 +28,6 @@
 [submodule ".vim/pack/banoris/opt/indent-blankline.nvim"]
 	path = .vim/pack/banoris/opt/indent-blankline.nvim
 	url = https://github.com/lukas-reineke/indent-blankline.nvim.git
+[submodule ".vim/pack/banoris/start/rainbow_parentheses.vim"]
+	path = .vim/pack/banoris/start/rainbow_parentheses.vim
+	url = https://github.com/junegunn/rainbow_parentheses.vim.git
