@@ -2,6 +2,11 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# TODO: try this ble.sh, check stability
+if [[ $- == *i* ]] && [[ -f "$HOME/dotfiles/ble.sh/out/ble.sh" ]]; then
+    source $HOME/dotfiles/ble.sh/out/ble.sh --noattach
+fi
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -14,6 +19,10 @@ export HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
+
+# https://askubuntu.com/q/70750/1003460 - prevent bash from escaping $
+# upon pressing <Tab>
+shopt -s direxpand
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=5000
@@ -55,11 +64,6 @@ if [ -n "$force_color_prompt" ]; then
 	color_prompt=
     fi
 fi
-
-parse_git_branch() {
-	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-
 
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
@@ -158,14 +162,14 @@ alias gvr='gvim --remote-tab'
 alias asdnoti='notify-send -t 0'
 alias install='sudo apt install'
 alias k='konsole'
-alias grep='grep --color=auto'
 alias asdsshfast='ssh -XC -c blowfish-cbc,arcfour'
 alias noti='notify-send -t 0'
 alias dl='wget --no-check-certificate --user=biskhand --ask-password'
 alias asdbashrc='source ~/.bashrc'
 alias dirs='dirs -v'
-alias h='history | cut -c 8- | v -' # `cut` removes the line numbers in history
-alias gr='grep -srnI'
+alias h="history | cut -c 8- | v +'set syntax=bash' +':$' -" # `cut` removes the line numbers in history
+# Need `--color=always` to preserve color when piped to another grep
+alias gr='grep -srnI --exclude=tags --color=always'
 alias datelog='date +"%Y_%b_%d_%H_%M"'
 alias cd2="cd ../.."
 alias cd3="cd ../../.."
@@ -176,6 +180,11 @@ alias adb1='adb -s R1J56L64e0f8df'
 alias adb2='adb -s R1J56L68fb9966'
 alias adb21='adb -s R1J56L32b70674'
 alias parallel='parallel --will-cite'
+alias gt='gnome-terminal'
+alias fgr-git='git ls-files | grep -i'
+## USAGE: grep -sr SOMESTUFF | get-file-ext. Why? Grepping some magical
+## strings, check what kind of file has it, deduce something... rinse-n-repeat
+alias get-file-ext='awk -F. '{print $NF}' | sort -u'
 
 # Copy to primary clipboard. E.g.: $ realpath /some/path | xc
 alias xc="xargs echo -n | xclip -selection c"
@@ -186,12 +195,13 @@ alias psgrep="ps -ef | grep "
 ### BEGIN variables {{{
 
 # https://stackoverflow.com/questions/10517128/change-gnome-terminal-title-to-reflect-the-current-directory
-PROMPT_COMMAND='echo -ne "\033]0;$(basename ${PWD})\007"' # display only current dir as title
+PROMPT_COMMAND='echo -ne "\033]0;"${PWD##*/}"\007"' # display only current dir as title
 export SER1=R1J56L64e0f8df
 export SER2=R1J56L68fb9966
 export SER3=R1J56L2006cc32
 # bash C-x C-e editor, default is nano
-export VISUAL=vi
+export VISUAL=vim
+export GREP_OPTIONS='--color=always'
 
 ### END variables }}}
 
@@ -211,7 +221,14 @@ if [ -f ~/.inputrc ]; then
     bind -f ~/.inputrc
 fi
 # TODO: check server or local machine, use diff color to remind that you are inside server's shell
-export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(parse_git_branch)\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] "
+# export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(parse_git_branch)\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] "
+# Retire above, use git-prompt.sh instead
+[[ -f ~/dotfiles/git-prompt.sh ]] && source ~/dotfiles/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+export GIT_PS1_SHOWUPSTREAM="verbose git"
+export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] "
+
 
 # less setting
 #export LESS='-XFR'
@@ -298,15 +315,44 @@ fgr() {
 # writing to the same file
 gmake() {
     # e.g. filename, asd_08-31_1038-39.log
-    local filename_="asd_$(date +"%m-%d_%H%M-%S").log"
+    # Temporarily enable pipefail
+    # pipefail disabled by default in bash, no idea why...
+    #   Refer https://stackoverflow.com/questions/1221833/pipe-output-and-capture-exit-status-in-bash
+    set -o pipefail
+    local log_dir=ASD_REMOVEME_LOGS
+    [ ! -d "${log_dir}" ] && mkdir -p "${log_dir}"
+    local timenow=$SECONDS
+    local filename_="${log_dir}/asd_$(date +"%m-%d_%H%M-%S").log"
     echo "================================================" >> $filename_
     echo "START=$(date --iso-8601=seconds)" |& tee -a $filename_
     echo "CMD=gmake $*" |& tee -a $filename_
+    echo "Logfile path: $filename_"
     command gmake $* |& tee -a $filename_
+    local exit_code_=$?
+    echo "exit_code_=${exit_code_}"
     echo "END=$(date --iso-8601=seconds)" |& tee -a $filename_
+    local timetaken=$(($SECONDS - $timenow))
+    echo "ELAPSED_TIME=$(($timetaken / 60))m$(($timetaken % 60))s" |& tee -a $filename_
     echo "Logfile path: $filename_"
     echo "================================================" >> $filename_
+    # if gmake cmd above failed, propagate its error code. Why need this?
+    #     gmake FAILED_BUILD && gmake ...
+    # Don't want to execute ls if prev gmake command failed. Execute `exit` on a subshell
+    # so the current interactive shell won't exit. We just want the exit code
+    set +o pipefail # reset pipefail
+    if [ $exit_code_ -ne 0 ]; then (exit $exit_code_); fi
+
+    # NOTE: crazy bug! [ ], aka `test`, returns non-zero if expression evaluates to False
+    # So eventhough $exit_code_ is not zero (exit after && not executed), $? is still set to 1
+    # [ $exit_code_ -ne 0 ] && (exit $exit_code_)
 }
+
+## get file extension
+## USAGE: grep -sr SOMESTUFF | get-file-ext
+get-file-ext() {
+    awk -F. '{print $NF}' | sort -u
+}
+
 
 ### END bashfunction }}}
 
@@ -334,3 +380,4 @@ if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UU
 # Project specific setting
 [[ -f ~/dotfiles-eric/.bashrc.eric ]] && source ~/dotfiles-eric/.bashrc.eric
 
+[[ ${BLE_VERSION-} ]] && ble-attach

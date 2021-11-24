@@ -17,6 +17,7 @@ set number
 set showcmd
 set nowrap  " disable line wrap
 set cursorline
+set cursorcolumn
 set ignorecase
 filetype indent on
 set showmatch
@@ -59,10 +60,11 @@ set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileNam
 " But you'll no longer have the backup swp file
 " Please save after every little changes
 set noswapfile
-hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
-hi Search     cterm=NONE ctermbg=yellow ctermfg=black
+set colorcolumn=100
 
 colorscheme elflord
+hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
+hi Search     cterm=NONE ctermbg=yellow ctermfg=black
 
 " ============= BEGIN custom command {{{
 " wrap lines without breaking words, list should be off for this feature.
@@ -88,7 +90,7 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 " center screen in search
 nnoremap n nzz
 nnoremap N Nzz
-nnoremap <Leader>n :tabnew 
+nnoremap <Leader>n :tabnew
 " Copy current buffer path relative to root of VIM session to system clipboard
 nnoremap <Leader>yp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
 " Copy file full path
@@ -159,8 +161,15 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
-" luochen1990/rainbow
-let g:rainbow_active = 1
+" luochen1990/rainbow. Broke syntax when termguicolors enabled! E.g.,
+" comma characters inside parens is colored with the same color as paren.
+" let g:rainbow_active = 1
+
+" junegunn/rainbow_parentheses.vim
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+let g:rainbow#blacklist = [81, 7]
+autocmd FileType * RainbowParentheses
+
 
 " enable tree in file explorer
 let g:netrw_liststyle=3
@@ -189,7 +198,7 @@ vim.cmd('packadd completion-nvim')
 -- nvim_lsp.pyls.setup{
 --     root_dir = nvim_lsp.util.root_pattern('.git');
 -- }
--- 
+--
 -- nvim_lsp.jdtls.setup{
 --     root_dir = nvim_lsp.util.root_pattern('.git');
 --     on_attach=require'completion'.on_attach;
@@ -243,6 +252,19 @@ au BufRead,BufNewFile *.cf setfiletype haskell
 
 " ============= END autocomplete }}}
 
+" ========== BEGIN neovim setting {{{
+" ~/.config/nvim/lua/init.lua
+if has('nvim')
+    " TODO: find theme written in lua for nvim
+
+    colorscheme evening " Looks nice with termguicolors
+
+    packadd indent-blankline.nvim
+    lua require('init')
+endif
+
+" ========== END neovim setting }}}
+
 " =========== BEGIN vimdiff {{{
 " superb vimdiff https://vimways.org/2018/the-power-of-diff/
 " Change the diff algorithm to be sort of like in meld
@@ -294,3 +316,4 @@ function LargeFile()
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
 
+autocmd FileType log setlocal nocursorcolumn colorcolumn=0

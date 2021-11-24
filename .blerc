@@ -1,0 +1,4 @@
+# TODO: not working!!
+ble-bind -m 'emacs' -f 'C-BS' 'kill-backward-cword'
+ble-face -s filename_directory underline,fg=33
+
