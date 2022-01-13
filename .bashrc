@@ -2,16 +2,18 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# TODO: try this ble.sh, check stability
-if [[ $- == *i* ]] && [[ -f "$HOME/dotfiles/ble.sh/out/ble.sh" ]]; then
-    source $HOME/dotfiles/ble.sh/out/ble.sh --noattach
-fi
 
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
       *) return;;
 esac
+
+# TODO: try this ble.sh, check stability
+if [[ $- == *i* ]] && [[ -f "$HOME/dotfiles/ble.sh/out/ble.sh" ]]; then
+    source $HOME/dotfiles/ble.sh/out/ble.sh --noattach
+    # echo NO BLE
+fi
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -170,6 +172,7 @@ alias dirs='dirs -v'
 alias h="history | cut -c 8- | v +'set syntax=bash' +':$' -" # `cut` removes the line numbers in history
 # Need `--color=always` to preserve color when piped to another grep
 alias gr='grep -srnI --exclude=tags --color=always'
+alias gr2='grep -srnI --exclude=tags'
 alias datelog='date +"%Y_%b_%d_%H_%M"'
 alias cd2="cd ../.."
 alias cd3="cd ../../.."
@@ -184,11 +187,17 @@ alias gt='gnome-terminal'
 alias fgr-git='git ls-files | grep -i'
 ## USAGE: grep -sr SOMESTUFF | get-file-ext. Why? Grepping some magical
 ## strings, check what kind of file has it, deduce something... rinse-n-repeat
-alias get-file-ext='awk -F. '{print $NF}' | sort -u'
+alias get-file-ext="awk -F. '{print \$NF}' | sort -u"
 
 # Copy to primary clipboard. E.g.: $ realpath /some/path | xc
 alias xc="xargs echo -n | xclip -selection c"
 alias psgrep="ps -ef | grep "
+
+# Download a file using curl.
+#   -L -- resolve redirect
+#   -O -- write output to local file
+alias curl-dl="curl -OL"
+
 
 # END alias }}}
 
@@ -347,13 +356,6 @@ gmake() {
     # [ $exit_code_ -ne 0 ] && (exit $exit_code_)
 }
 
-## get file extension
-## USAGE: grep -sr SOMESTUFF | get-file-ext
-get-file-ext() {
-    awk -F. '{print $NF}' | sort -u
-}
-
-
 ### END bashfunction }}}
 
 # enable autojump -- https://github.com/wting/autojump
@@ -380,4 +382,6 @@ if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UU
 # Project specific setting
 [[ -f ~/dotfiles-eric/.bashrc.eric ]] && source ~/dotfiles-eric/.bashrc.eric
 
+# ble.sh
 [[ ${BLE_VERSION-} ]] && ble-attach
+

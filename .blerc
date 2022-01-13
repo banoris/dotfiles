@@ -1,4 +1,16 @@
-# TODO: not working!!
-ble-bind -m 'emacs' -f 'C-BS' 'kill-backward-cword'
+## Color setting
 ble-face -s filename_directory underline,fg=33
+# ble-face command_function=fg=92 # 92 seems too dark
+ble-face command_function=fg=135
+ble-face syntax_function_name=fg=135,bold
+ble-face varname_expr=fg=135,bold
+
+
+bleopt complete_auto_delay=400
+
+# Disable interactive menu_complete. Not used to this,
+# especially since you always spam Tab key.
+# Instead, if still wants this, activate with press Shift-Tab
+# Or, how about don't map 'TAB' 'complete' ?
+bleopt complete_menu_complete=
 
