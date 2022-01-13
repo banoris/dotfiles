@@ -31,3 +31,6 @@
 [submodule ".vim/pack/banoris/start/rainbow_parentheses.vim"]
 	path = .vim/pack/banoris/start/rainbow_parentheses.vim
 	url = https://github.com/junegunn/rainbow_parentheses.vim.git
+[submodule ".vim/pack/banoris/start/vista.vim"]
+	path = .vim/pack/banoris/start/vista.vim
+	url = https://github.com/liuchengxu/vista.vim.git

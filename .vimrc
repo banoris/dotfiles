@@ -17,7 +17,7 @@ set number
 set showcmd
 set nowrap  " disable line wrap
 set cursorline
-set cursorcolumn
+" set cursorcolumn " too distracting?
 set ignorecase
 filetype indent on
 set showmatch
@@ -61,6 +61,12 @@ set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileNam
 " Please save after every little changes
 set noswapfile
 set colorcolumn=100
+" Remove ':' from file separator. E.g, `grep -n test somefile.txt` -> somefile.txt:32: 
+set isfname-=:
+if !has('nvim')
+    " Indicator for trailing whitespace. For nvim, use indent_blankline plugin
+    set listchars+=trail:~
+endif
 
 colorscheme elflord
 hi CursorLine cterm=NONE ctermbg=8 ctermfg=NONE
@@ -146,6 +152,16 @@ endif
 
 " Terminal setting.
 tnoremap <C-j> <C-\><C-n>
+
+" Search for visually selected text forwards.
+" `*` only search for word under cursor, this mapping extend it.
+" See <https://vim.fandom.com/wiki/Search_for_visually_selected_text>
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R>=&ic?'\c':'\C'<CR><C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gVzv:call setreg('"', old_reg, old_regtype)<CR>
+
 
 " ======================== END key mapping }}}
 
