@@ -34,3 +34,6 @@
 [submodule ".vim/pack/banoris/start/vista.vim"]
 	path = .vim/pack/banoris/start/vista.vim
 	url = https://github.com/liuchengxu/vista.vim.git
+[submodule ".vim/pack/banoris/start/yaml-revealer"]
+	path = .vim/pack/banoris/start/yaml-revealer
+	url = https://github.com/Einenlum/yaml-revealer.git
