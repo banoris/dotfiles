@@ -313,11 +313,13 @@ endif
 " ========= Uncategorized stuff ======
 
 " Opening Large file configuration for better performance
- " file is large than 7Mb
-let g:LargeFile = 1024 * 1024 * 7
-augroup LargeFile
-    autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
-augroup END
+" file is large than 7Mb. Seems fine for nvim
+if !has('nvim')
+    let g:LargeFile = 1024 * 1024 * 7
+    augroup LargeFile
+        autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+    augroup END
+endif
 
 function LargeFile()
     " no syntax highlighting etc

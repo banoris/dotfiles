@@ -37,3 +37,6 @@
 [submodule ".vim/pack/banoris/start/yaml-revealer"]
 	path = .vim/pack/banoris/start/yaml-revealer
 	url = https://github.com/Einenlum/yaml-revealer.git
+[submodule ".vim/pack/banoris/start/nvim-autopairs"]
+	path = .vim/pack/banoris/start/nvim-autopairs
+	url = https://github.com/windwp/nvim-autopairs.git
