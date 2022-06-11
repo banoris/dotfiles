@@ -2,7 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -14,6 +13,10 @@ if [[ $- == *i* ]] && [[ -f "$HOME/dotfiles/ble.sh/out/ble.sh" ]]; then
     source $HOME/dotfiles/ble.sh/out/ble.sh --noattach
     # echo NO BLE
 fi
+
+# gnome-terminal bug
+# https://askubuntu.com/questions/511633/terminal-tab-not-opening-in-same-directory
+[[ -f /etc/profile.d/vte.sh ]] && . /etc/profile.d/vte.sh
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -54,8 +57,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
+force_color_prompt=yes
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -141,6 +143,9 @@ export PATH=$PATH:$HOME/LLVM_10.0.1/bin
 # Golang
 export PATH=$PATH:$HOME/go/bin
 
+# Erlang rebar
+export PATH=$PATH:~/.cache/rebar3/bin
+
 # BEGIN alias {{{
 # start with 'asd' for personal alias namespace
 
@@ -171,9 +176,9 @@ alias asdbashrc='source ~/.bashrc'
 alias dirs='dirs -v'
 alias h="history | cut -c 8- | v +'set syntax=bash' +':$' -" # `cut` removes the line numbers in history
 # Need `--color=always` to preserve color when piped to another grep
-alias gr='grep -srnI --exclude=tags --color=always'
-alias gr2='grep -srnI --exclude=tags'
-alias datelog='date +"%Y_%b_%d_%H_%M"'
+alias gr='egrep -srnI --exclude-dir={.git} --exclude=tags --color=always'
+alias gr2='egrep -srnI --exclude-dir={.git} --exclude=tags'
+alias datelog='date +"%FT%H%M-%S"'
 alias cd2="cd ../.."
 alias cd3="cd ../../.."
 alias cd4="cd ../../../.."
@@ -185,6 +190,7 @@ alias adb21='adb -s R1J56L32b70674'
 alias parallel='parallel --will-cite'
 alias gt='gnome-terminal'
 alias fgr-git='git ls-files | grep -i'
+alias g='git'
 ## USAGE: grep -sr SOMESTUFF | get-file-ext. Why? Grepping some magical
 ## strings, check what kind of file has it, deduce something... rinse-n-repeat
 alias get-file-ext="awk -F. '{print \$NF}' | sort -u"
@@ -199,12 +205,13 @@ alias psgrep="ps -ef | grep "
 alias curl-dl="curl -OL"
 
 
+
 # END alias }}}
 
 ### BEGIN variables {{{
 
 # https://stackoverflow.com/questions/10517128/change-gnome-terminal-title-to-reflect-the-current-directory
-PROMPT_COMMAND='echo -ne "\033]0;"${PWD##*/}"\007"' # display only current dir as title
+PROMPT_COMMAND='echo -ne "\033]0;\"${PWD##*/}\"\007"' # display only current dir as title
 export SER1=R1J56L64e0f8df
 export SER2=R1J56L68fb9966
 export SER3=R1J56L2006cc32
@@ -236,7 +243,8 @@ fi
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export GIT_PS1_SHOWUPSTREAM="verbose git"
-export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] "
+# export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\j\$\[\e[m\] "
+# export PS1='\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 "[%s]")\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] '
 
 
 # less setting
@@ -300,7 +308,7 @@ cd() {
 }
 
 # function to set terminal title (gnome-terminal)
-set-title(){
+set-title() {
   if [[ -z "$ORIG" ]]; then
     ORIG=$PS1
   fi
@@ -308,10 +316,10 @@ set-title(){
   PS1=${ORIG}${TITLE}
 }
 
+# Usage: fgr [/some/folder/] <filename>
+#   find | grep combo shorthand, uses this a lot!
 fgr() {
-    # Usage: fgr [/some/folder/] <filename>
-    #   find | grep combo shorthand, uses this a lot!
-	if [ -n "${2}" ]; then
+    if [ -n "${2}" ]; then
         find ${1} | grep -i ${2}
     else
         find | grep -i ${1}
@@ -331,7 +339,7 @@ gmake() {
     local log_dir=ASD_REMOVEME_LOGS
     [ ! -d "${log_dir}" ] && mkdir -p "${log_dir}"
     local timenow=$SECONDS
-    local filename_="${log_dir}/asd_$(date +"%m-%d_%H%M-%S").log"
+    local filename_="${log_dir}/asd_$(date +"%FT%H%M-%S").log"
     echo "================================================" >> $filename_
     echo "START=$(date --iso-8601=seconds)" |& tee -a $filename_
     echo "CMD=gmake $*" |& tee -a $filename_
@@ -356,6 +364,10 @@ gmake() {
     # [ $exit_code_ -ne 0 ] && (exit $exit_code_)
 }
 
+# USAGE: view-csv some-file.csv
+#   View csv file in vim
+csv-view() { column -s, -t < $1 | v-; }
+
 ### END bashfunction }}}
 
 # enable autojump -- https://github.com/wting/autojump
@@ -378,9 +390,14 @@ if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UU
 [[ -f ~/.bash_tmux_completion ]] && source ~/.bash_tmux_completion
 [[ -f ~/dotfiles/.git-completion.bash ]] && source ~/dotfiles/.git-completion.bash
 [[ -f ~/dotfiles/.kubectl-completion.bash ]] && source ~/dotfiles/.kubectl-completion.bash
+[[ -f ~/dotfiles/completions/helm-completion.bash ]] && source ~/dotfiles/completions/helm-completion.bash
 
 # Project specific setting
 [[ -f ~/dotfiles-eric/.bashrc.eric ]] && source ~/dotfiles-eric/.bashrc.eric
+
+# Setup git autocomplete for git alias g
+complete -o default -o nospace -F _git g
+
 
 # ble.sh
 [[ ${BLE_VERSION-} ]] && ble-attach

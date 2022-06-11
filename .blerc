@@ -1,12 +1,17 @@
 ## Color setting
-ble-face -s filename_directory underline,fg=33
+# ble-face -s filename_directory underline,fg=33
+ble-face filename_directory=fg=33,underline
 # ble-face command_function=fg=92 # 92 seems too dark
 ble-face command_function=fg=135
 ble-face syntax_function_name=fg=135,bold
 ble-face varname_expr=fg=135,bold
 
+## auto-complete setup. Disable?
+bleopt complete_auto_complete=
+bleopt complete_ambiguous=
+bleopt complete_auto_history=
 
-bleopt complete_auto_delay=400
+# bleopt complete_auto_delay=400
 
 # Disable interactive menu_complete. Not used to this,
 # especially since you always spam Tab key.
