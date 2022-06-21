@@ -1,0 +1,4 @@
+k9s:
+  enableMouse: true
+  # Set to true to hide K9s header. Default false
+  headless: true
