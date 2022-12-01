@@ -43,9 +43,6 @@
 [submodule ".vim/pack/banoris/start/vim-startify"]
 	path = .vim/pack/banoris/start/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
-[submodule "undistract-me"]
-	path = undistract-me
-	url = https://github.com/qbouvet/undistract-me
 [submodule ".vim/pack/banoris/start/mru"]
 	path = .vim/pack/banoris/start/mru
 	url = https://github.com/yegappan/mru.git
