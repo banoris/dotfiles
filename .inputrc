@@ -17,3 +17,9 @@ set completion-ignore-case on
 # Alt-Backspace generates `^[^?`.
 "\e\C-?": backward-kill-word
 
+
+# Autoclosing quotes and paren
+# https://stackoverflow.com/questions/9357464/how-to-start-a-shell-without-any-user-configuration
+"(": "\C-v()\e[D"
+"\"": "\C-v\"\C-v\"\e[D"
+

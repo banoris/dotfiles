@@ -1,0 +1,1 @@
+bindkey "^W" backward-delete-word

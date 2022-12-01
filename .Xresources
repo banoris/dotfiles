@@ -1,0 +1,4 @@
+xterm*faceName: Monospace
+xterm*faceSize: 11
+xterm*scrollTtyOutput: false
+

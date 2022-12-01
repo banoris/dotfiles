@@ -4,6 +4,8 @@ if( $?USER == 0 || $?prompt == 0 ) then
     exit
 endif
 
+# Trick to differentiate between personal vs other machines, e.g. some pods
+set myname = "eiskbad"
 
 # ===== BEGIN misc {{{
 
@@ -15,42 +17,25 @@ endif
 set history=1000
 set histdup=erase
 set histfile=~/.tcsh_history
+# set backslash_quote
 
 # ignorecase autocomplete
 set autolist = ambiguous
 # TODO: good???
 set complete = enhance
 
-if ( $?gsnws == 1 ) then
-    # export var so you can use it in bash
-    setenv gsnws $gsnws
-endif
-
 # Disable CTRL-s, use it for fwd search instead. Refer https://stackoverflow.com/a/791800
 stty -ixon
 bindkey "^R" i-search-back
 bindkey "^s" i-search-fwd
+bindkey "^W" backward-delete-word
 
 # ===== END misc }}}
 
 # ===== BEGIN vars {{{
-set path = ( $HOME/.local/bin $path )
-# Ok to use newer git?
-set path = ( /app/vbuild/sys/meld/1.8.4/bin \
-                /app/vbuild/sys/sublime_text/3.2.2/bin \
-                    #/app/vbuild/RHEL7-x86_64/git/2.31.1/bin \
-                $path )
-
-#set path = ( $path /proj/sgsn-tools/wh/tools/RHE64-7/otp/23.2.7.4/bin )
-
-# NOTE: any env issue messing with $prompt?
-#   \"\$" -- this blackmagic format is for $ sign!
-if ( "$prompt" !~ "*\n*" ) then
-    set prompt = "$prompt%B%~ %T\n\"\$"%b "
-#"
-endif
 
 setenv LESS '-SiR'
+
 # ===== END vars }}}
 
 # ===== BEGIN alias {{{
@@ -61,7 +46,10 @@ setenv LESS '-SiR'
 # https://stackoverflow.com/a/47622260/11548113
 alias '#' 'echo \!* >> /dev/null'
 
-alias precmd 'printf "\033]0;`bash $HOME/dotfiles/get-pwd-shortform.bash`\007"' # display current dir as title
+# TODO: check if tbox shell
+if ( "$myname" == "$user") then
+    alias precmd 'printf "\033]0;`bash $HOME/dotfiles/get-pwd-shortform.bash`\007"' # display current dir as title
+endif
 
 # Wrap make with some logging before and after cmd execution
 # No worries, still execute the same cmd
@@ -79,9 +67,6 @@ alias gmake1 'set cmd_="\!*" \
 alias ll 'ls -ahlF'
 alias la 'ls -A'
 alias l 'ls -CF'
-
-# localdev setting, eg. set erlang runtime
-alias mysetting "set path = ( $path /proj/sgsn-tools/wh/tools/RHE64-7/otp/23.2.7.4/bin/ )"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -101,8 +86,6 @@ alias install 'sudo apt install'
 alias grep 'grep --color=auto'
 alias asdsshfast 'ssh -XC -c blowfish-cbc,arcfour'
 alias noti 'notify-send -t 0'
-alias dl 'wget --no-check-certificate --user=eiskbad --ask-password'
-alias asdbashrc 'source ~/.bashrc'
 alias dirs 'dirs -v'
 alias h 'history | cut -c 8- | v -' # cut is to remove the numbers in history
 alias gr 'grep --exclude-dir=".git" -srnI'
@@ -115,11 +98,26 @@ alias cd3 "cd ../../.."
 alias cd4 "cd ../../../.."
 alias cd5 "cd ../../../../.."
 
+alias csv-view 'column -s, -t < \!:1 | v-; '
+
 alias parallel 'parallel --will-cite'
 
 # Copy to primary clipboard. E.g.: $ realpath /some/path | xc
 alias xc "xargs echo -n | xclip -selection c"
 alias psgrep "ps -ef | grep "
+alias gt "gnome-terminal"
 
 # ===== END alias }}}
+
+# Keybindings {{{
+# ===============
+
+# Can be done in ~/.bindings, but easier with no dependency
+
+bindkey "^W" backward-delete-word
+
+
+# END Keybindings }}}
+
+source ~/dotfiles-eric/.cshrc.user
 

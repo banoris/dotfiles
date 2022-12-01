@@ -1,0 +1,106 @@
+set vertical-split = no
+set main-view-date = custom
+set main-view-date = relative
+set main-view-author = full
+set main-view-author-width = 20
+set main-view-id = yes
+set main-view-commit-title-graph = no
+set ignore-case = smart-case
+
+# https://kparal.wordpress.com/2020/12/16/show-a-side-by-side-git-diff-on-any-commit-in-tig-using-meld/
+# use difftool to compare a commit in main/diff view with its parent
+# https://github.com/jonas/tig/issues/219#issuecomment-406817763
+bind main w !git difftool -d %(commit)^!
+bind diff w !git difftool -d %(commit)^!
+
+
+# Modified from https://gist.github.com/matsubo/8012c260f76f1dad3ad9
+#
+color "diff --"			yellow	default
+color "--- "			yellow	default
+color "+++ "			yellow	default
+color "@@"			magenta	default
+color "+"			green	default
+color " +"			green	default
+color "-"			red	default
+color " -"			red	default
+color "index "			magenta	default
+color "old file mode "		yellow	default
+color "new file mode "		yellow	default
+color "deleted file mode "	yellow	default
+color "copy from "		yellow	default
+color "copy to "		yellow	default
+color "rename from "		yellow	default
+color "rename to "		yellow	default
+color "similarity "		yellow	default
+color "dissimilarity "		yellow	default
+color "diff-tree "		cyan	default
+color "Author: "		cyan	default
+color "Commit: "		magenta	default
+color "Tagger: "		magenta	default
+color "Merge: "			cyan	default
+color "Date: "			yellow	default
+color "AuthorDate: "		yellow	default
+color "CommitDate: "		yellow	default
+color "TaggerDate: "		yellow	default
+color "Refs: "			red	default
+color "Reflog: "		red	default
+color "Reflog message: "	yellow	default
+color "stash@{"			magenta	default
+color "commit "			green	default
+color "parent "			cyan	default
+color "tree "			cyan	default
+color "author "			green	default
+color "committer "		magenta	default
+color "    Signed-off-by"	yellow	default
+color "    Acked-by"		yellow	default
+color "    Tested-by"		yellow	default
+color "    Reviewed-by"		yellow	default
+color default			default	default	normal
+color cursor			white	green	bold
+color status			green	default
+color delimiter			magenta	default
+color date			cyan	default
+color mode			cyan	default
+color id			magenta	default
+color overflow			red	default
+color header			yellow	default
+color section			cyan	default
+color directory			yellow	default
+color file			default	default
+color grep.file			cyan	default
+color file-size			default	default
+color line-number		cyan	default
+color title-blur		white	blue
+color title-focus		white	blue	bold
+color main-commit		default	default
+color main-tag			magenta	default	bold
+color main-local-tag		magenta	default
+color main-remote		yellow	default
+color main-replace		cyan	default
+color main-tracked		yellow	default	bold
+color main-ref			cyan	default
+color main-head			cyan	default	bold
+color stat-none			default	default
+color stat-staged		magenta	default
+color stat-unstaged		magenta	default
+color stat-untracked		magenta	default
+color help-group		cyan	default
+color help-action		yellow	default
+color diff-stat			cyan	default
+color palette-0			magenta	default
+color palette-1			yellow	default
+color palette-2			cyan	default
+color palette-3			green	default
+color palette-4			default	default
+color palette-5			white	default
+color palette-6			red	default
+color palette-7			magenta	default bold
+color palette-8			yellow	default bold
+color palette-9			cyan	default bold
+color palette-10		green	default bold
+color palette-11		default	default bold
+color palette-12		white	default bold
+color palette-13		red	default bold
+color graph-commit		cyan	default
+color search-result		black	yellow

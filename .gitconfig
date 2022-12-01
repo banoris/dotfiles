@@ -1,12 +1,20 @@
 [color]
 	ui = auto
 
+[includeif "gitdir:~/dev/"]
+    path = ~/dotfiles/.personal.gitconfig
+
+[core]
+    editor = nvim
+    # -S to wrap line
+    pager = less -N
+
 [alias]
     zip = archive --format=zip -o CODE.zip HEAD
-    diverges = !sh -c 'git rev-list --boundary $1...$2 | grep ^- | cut -c2-'
-    diverges1 = !sh -c 'git rev-list $(git rev-list --first-parent ^$1 $2| tail -n1)^^!'
-    changed = show --pretty=\"format:\" --name-only
-    st = status -sb
+    # Need the 'cd -- ...' portion because by default, shell command will be run
+    # from top-level directory.
+    # See https://stackoverflow.com/questions/26243145/git-aliases-operate-in-the-wrong-directory
+    st = "! cd -- ${GIT_PREFIX:-.}; git -c color.ui=always status -sb | sort"
     sta = status
     cl = clone
     cv = commit -v
@@ -15,15 +23,15 @@
     r = reset
     cp = cherry-pick
     gr = grep -Ii
-    # }}}
+    clean-spotless = ! git clean -f -X && git clean -f -d && git checkout .
+
     # tweak defaults {{{
     diff = diff --word-diff
+    diff-vdiff = difftool --tool=vimdiff
+    diff-nvdiff = difftool --tool=nvimdiff
+    diff-icdiff = ! git difftool --tool=icdiff | less
     branch = branch -ra
     grep = grep -Ii
-    bra = branch -ra
-    ai = add --interactive
-    # grep on filename
-    f = "!git ls-files | grep -i"
     # }}}
     # commit {{{
     cm = commit -m
@@ -33,17 +41,18 @@
     can = commit --amend --no-edit
     caa = commit -a --amend -C HEAD
     # }}}
+
     # log commands {{{
     lns = log --name-status
-	lnd = log --oneline --no-decorate
+    lnd = log --oneline --no-decorate
     ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%cd]%Cred%d\\ %Creset%s%Cblue\\ [%an]" --decorate --date=relative
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     lc  = "!f() { git ll "$1"^.."$1"; }; f"
     lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
-    lp = log -p
-    # get full history changes for a file
-    lf = log -p -M --follow
+    lp = log -p -M --follow
+    log-ns = log --name-status
     # }}}
+
     # diff {{{
     d = diff --word-diff
     dc = diff --cached
@@ -53,6 +62,7 @@
     diffr  = "!f() { git diff "$1"^.."$1"; }; f"
 	difftv = difftool --tool=vimdiff
     # }}}
+
     # reset commands {{{
     r1 = reset HEAD^
     r2 = reset HEAD^^
@@ -60,64 +70,23 @@
     rh1 = reset HEAD^ --hard
     rh2 = reset HEAD^^ --hard
     # }}}
+
     # git svn {{{
     svnr = svn rebase
     svnd = svn dcommit
     svnl = svn log --oneline --show-commit
     # }}}
+
     # stash {{{
     sl = stash list
     sa = stash apply
     ss = stash save
     # }}}
-    # assume aliases {{{
-    assume = update-index --assume-unchanged
-    unassume = update-index --no-assume-unchanged
-    # show assumed files
-    assumed = "!git ls-files -v | grep ^h | cut -c 3-"
-    # unassume all the assumed files
-    unassumeall = "!git assumed | xargs git update-index --no-assume-unchanged"
-    assumeall = "!git st -s | awk {'print $2'} | xargs git assume"
+
+    # submodule {{{
+    subm-pull = submodule update --init --recursive
     # }}}
-    # subtree {{{
-    #   add
-    sba = "!f() { git subtree add --prefix $2 $1 master --squash; }; f"
-    #   update/pull
-    sbu = "!f() { git subtree pull --prefix $2 $1 master --squash; }; f"
-    # }}}
-    # various useful {{{
-    # last tag created
-    lasttag = describe --tags --abbrev=0
-    lt = describe --tags --abbrev=0
-# conflict/merges
-    ours = "!f() { git co --ours $@ && git add $@; }; f"
-    theirs = "!f() { git co --theirs $@ && git add $@; }; f"
 
-    #list remotes
-    rem="!git config -l | grep remote.*url | tail -n +2"
-
-    #apply patch from other local repo
-    lap = "!f() { git --git-dir=$1 format-patch -k -1 --stdout $2 | git am -3 -k; }; f"
-
-    #open files edited in last commit
-    last = "!gvim $(git show HEAD --format="" --name-only | xargs)"
-
-    # initial empty commit
-    empty = "!git commit -am\"[empty] Initial commit\" --allow-empty"
-
-    # list all aliases
-    la = "!git config -l | grep alias | cut -c 7-"
-    # }}}
-    # convoluted aliases {{{
-    # grep from root folder
-    gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
-    #rename branch tree to done-
-    done = "!f() { git branch | grep "$1" | cut -c 3- | grep -v done | xargs -I{} git branch -m {} done-{}; }; f"
-    #add bitbucket remote
-    ra = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
-    # temporary local ignore, e.g. lazy to add to .gitignore. https://stackoverflow.com/a/23259612/11548113
-    ignore = update-index --assume-unchanged
-    ignore-no = update-index --no-assume-unchanged
 
 [submodule]
     fetchJobs = 4
@@ -131,8 +100,27 @@
 [difftool]
     prompt = false
 
+[difftool "icdiff"]
+    cmd = icdiff --line-numbers $LOCAL $REMOTE
+
 [mergetool]
-    tool = meld
+    tool = mymeld
+    conflictStyle = diff3
+    prompt = no
+    # Auto-merge on files like yaml may give you headache. So prevent git from
+    # automatically prompt to commit upon successful merge
+    # TODO:2022-09-02: doesn't work? Still need `git merge --no-commit`
+    commit = no
+
+[mergetool "mymeld"]
+    # Inspired by: https://lukas.zapletalovi.com/2012/09/three-way-git-merging-with-meld.html
+    # Create 4 tabs:
+    cmd = meld $LOCAL $BASE $REMOTE -o $MERGED --auto-merge --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $REMOTE
+
+    # with --auto-merge, you only need to resolve the conflicted chunks (red),
+    # git will resolve other unconflicted chunks.
+    # cmd = meld --auto-merge "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+    # useAutoMerge = true
 
 # NOTE: user/email config for personal github. Pick accordingly.
 #       includeIf requires git v2.13+
@@ -141,5 +129,5 @@
 #[include]
 #    path = ~/dotfiles/personal.gitconfig
 
-[core]
-	editor = ~/.local/bin/nvim
+[submodule]
+    fetchjobs = 12

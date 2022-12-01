@@ -13,6 +13,11 @@ cd $HOME
 [[ -f .vim ]]       && mv .vim .vim.bak; ln -sf dotfiles/.vim ./
 [[ -f .seascope ]]  && mv .seascope .seascope.bak; ln -sf dotfiles/.seascope ./
 [[ -f .bash_tmux_completion ]]  && mv .bash_tmux_completion .bash_tmux_completion.bak; ln -sf dotfiles/.bash_tmux_completion ./
+# setup xterm font and font size
+[[ -f .Xresources ]]  && mv .Xresources  .Xresources.bak; ln -sf dotfiles/.Xresources  ./
+
+# custom binaries
+ln -sf ~/dotfiles/bin-amd64 ~/.local/
 
 # setup grc
 echo "===== Setup grc ====="

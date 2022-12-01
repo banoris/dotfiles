@@ -92,7 +92,7 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
+    # alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
@@ -135,7 +135,10 @@ export PATH=$PATH:/opt/ghc/bin/
 # latex
 export PATH=$PATH:/usr/local/texlive/2020/bin/x86_64-linux
 
+# custom binaries
 export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin-amd64:$PATH
+export PATH=$HOME/dotfiles/bin:$PATH
 
 # Clang, llvm
 export PATH=$PATH:$HOME/LLVM_10.0.1/bin
@@ -191,6 +194,9 @@ alias parallel='parallel --will-cite'
 alias gt='gnome-terminal'
 alias fgr-git='git ls-files | grep -i'
 alias g='git'
+
+# gnome-terminal --title="pod shell" --tab -- /bin/tcsh -c "kubectl exec -it $CONTAINER -- tcsh -c erl; bash"
+
 ## USAGE: grep -sr SOMESTUFF | get-file-ext. Why? Grepping some magical
 ## strings, check what kind of file has it, deduce something... rinse-n-repeat
 alias get-file-ext="awk -F. '{print \$NF}' | sort -u"
@@ -217,7 +223,8 @@ export SER2=R1J56L68fb9966
 export SER3=R1J56L2006cc32
 # bash C-x C-e editor, default is nano
 export VISUAL=vim
-export GREP_OPTIONS='--color=always'
+# export GREP_OPTIONS='--color=always'
+export GREP_OPTIONS='--color=auto'
 
 ### END variables }}}
 
@@ -246,6 +253,8 @@ export GIT_PS1_SHOWUPSTREAM="verbose git"
 # export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\j\$\[\e[m\] "
 # export PS1='\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 "[%s]")\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] '
 
+# \j - number of background jobs. Show only if job exists
+export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$([ \j -gt 0 ] && echo [\j])\$\[\e[m\] "
 
 # less setting
 #export LESS='-XFR'

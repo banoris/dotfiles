@@ -1,7 +1,6 @@
 " README:
 " clipboard=unnamedplus -- might cause VNC hang, refer below for WA
 
-
 set visualbell t_vb=
 set t_Co=256
 set nocompatible
@@ -47,6 +46,7 @@ set statusline+=\ %l        " Current line
 set statusline+=/         " Separator
 set statusline+=%L        " Total lines
 set wildmode=longest:list,full  " bash like filename tab completion
+set grepprg=grep\ -srnI\ --exclude-dir={.git}
 " Refer wildmenu demo here https://www.youtube.com/watch?v=ri6pZo1TvKE
 set wildmenu
 "set path+=**
@@ -60,6 +60,7 @@ set wildignorecase  " case insensitive filename completion, e.g. tabnew <fileNam
 " But you'll no longer have the backup swp file
 " Please save after every little changes
 set noswapfile
+" TODO: 80 when filetype=git-commit-msg; disable when filetype=log
 set colorcolumn=100
 " Remove ':' from file separator. E.g, `grep -n test somefile.txt` -> somefile.txt:32: 
 set isfname-=:
@@ -76,7 +77,29 @@ hi Search     cterm=NONE ctermbg=yellow ctermfg=black
 " wrap lines without breaking words, list should be off for this feature.
 " Also use 'breakindent' to get like vscode deepIndent
 " usage:  :Wrap
-command! -nargs=* Wrap set wrap linebreak nolist breakindent breakindentopt=shift:2
+
+function ToggleWrap()
+  if &wrap
+    echo "Wrap OFF"
+    setlocal nowrap
+
+    " reset keymapping to default behavior
+    unmap j
+    unmap k
+    unmap $
+    unmap 0
+  else
+    echo "Wrap ON"
+    setlocal wrap linebreak nolist breakindent breakindentopt=shift:2
+    setlocal display+=lastline
+    " Better navigation for wrapped line
+    nnoremap j gj
+    nnoremap k gk
+    nnoremap $ g$
+    nnoremap 0 g0
+  endif
+endfunction
+
 
 " Auto highlight word under cursor. Not enabled by default, run cmd :HL
 command! -nargs=* HL autocmd CursorMoved * exe printf('match Underlined /\V\<%s\>/', escape(expand('<cword>'), '/\'))
@@ -84,6 +107,7 @@ command! -nargs=* HL autocmd CursorMoved * exe printf('match Underlined /\V\<%s\
 " ============= END custom command }}}
 
 " ========================== BEGIN keyboard mapping {{{
+
 " Disable Ex mode when pressing Q
 nnoremap Q <nop>
 " open ctag file symbol under cursor
@@ -96,13 +120,15 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 " center screen in search
 nnoremap n nzz
 nnoremap N Nzz
-nnoremap <Leader>n :tabnew
+nnoremap <Leader>n :tabnew<Space>
 " Copy current buffer path relative to root of VIM session to system clipboard
 nnoremap <Leader>yp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
 " Copy file full path
 nnoremap <Leader>yfp :let @*=expand("%:p")<cr>:echo "Copied full file path to clipboard"<cr>
 " Copy from cursor to EOL without \n character
 nnoremap Y vg_y:echo "Copy success"<cr>
+" Same hotkey like vscode
+nnoremap <M-z> :call ToggleWrap()<CR>
 
 " open file under cursor in new tab
 nnoremap gt <C-w>gf
@@ -123,9 +149,11 @@ vnoremap <C-c> "*y
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 
+" FIXME: <C-k> is kill words to the right!!!
+" Use C-k since C-j is Enter for emacs, common on shell
 " added 'l' because Esc default behavior is move one cursor to the left
-imap <C-j> <Esc>l
-map <C-j> <Esc>
+imap <C-k> <Esc>l
+map <C-k> <Esc>
 
 " Clang learning - to compile and run the executable by pressing F8.
 " https://stackoverflow.com/questions/2627886/how-do-i-run-a-c-program-from-vim
@@ -134,6 +162,18 @@ imap <F8> <Esc>:w<CR>:!clear; gcc % -o %< && ./%<<CR>
 
 " Shift-z-q quit a buffer, Shift z-w to quit all
 nnoremap <S-z><S-w> <Esc>:qa<CR>
+
+" Mimic emacs hotkey in Insert Mode
+inoremap <C-A> <Home>
+inoremap <C-B> <Left>
+inoremap <C-E> <End>
+inoremap <C-F> <Right>
+inoremap <M-f> <C-Right>
+inoremap <M-b> <C-Left>
+inoremap <C-K> <Esc>lDa
+inoremap <C-U> <Esc>d0xi
+inoremap <C-Y> <Esc>Pa
+
 
 " if has('nvim')
 if 0
@@ -151,7 +191,8 @@ if 0
 endif
 
 " Terminal setting.
-tnoremap <C-j> <C-\><C-n>
+tnoremap <C-k> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
 
 " Search for visually selected text forwards.
 " `*` only search for word under cursor, this mapping extend it.
@@ -161,6 +202,22 @@ vnoremap <silent> * :<C-U>
   \gvy/<C-R>=&ic?'\c':'\C'<CR><C-R><C-R>=substitute(
   \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gVzv:call setreg('"', old_reg, old_regtype)<CR>
+
+nnoremap ZS :w<CR>
+
+" After yank in visual line, cursor will be at the first visual line.
+" It's very annoying, so WA.
+" https://stackoverflow.com/questions/3806629/yank-a-region-in-vim-without-the-cursor-moving-to-the-top-of-the-block
+vmap y ygv<Esc>
+
+" === fzf ===
+
+" like st3 ctrl-p
+nnoremap <silent> <C-p> :Files<CR>
+
+" Window in split down, 30% height
+let g:fzf_layout = { 'down': '30%' }
+let g:fzf_preview_window = []
 
 
 " ======================== END key mapping }}}
@@ -188,12 +245,40 @@ autocmd FileType * RainbowParentheses
 
 
 " enable tree in file explorer
-let g:netrw_liststyle=3
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
 
-let MRU_Max_Entries = 100
+" setup yegappan/mru
+"
+if !has('win32')
+    " Linux env using slow NFS filesystem for $HOME/. This causes slow vim startup
+    " since this plugin will, by default, write to $HOME/.vim_mru_file
+    " everytime you open a file.
+    let MRU_File = '/tmp/.eiskbad_vim_mru_files'
+endif
+let MRU_Max_Entries = 40
+
 
 " https://github.com/bfrg/vim-cpp-modern
 let g:cpp_simple_highlight = 1
+
+" setup vim-startify
+"
+let g:startify_lists = [
+        \ { 'type': 'files',     'header': ['   MRU']            },
+        \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+        \ { 'type': 'sessions',  'header': ['   Sessions']       },
+        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+        \ ]
+let g:startify_custom_header = []
+let g:startify_files_number = 30
+
+" === vim-plug ===
+" Slow startup?? 
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+call plug#end()
 
 " ========= END misc plugin setting {{{
 
@@ -335,3 +420,12 @@ function LargeFile()
 endfunction
 
 autocmd FileType log setlocal nocursorcolumn colorcolumn=0
+autocmd FileType gitcommit setlocal colorcolumn=72
+
+" Automatically open quickfix. E.g., when running :grep.
+" See https://www.reddit.com/r/vim/comments/bmh977/automatically_open_quickfix_window_after/
+augroup quickfix
+    autocmd!
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow
+augroup END
