@@ -1,2 +1,6 @@
+.vim/plugged
+
+# manually download vim-plug
+.vim/autoload/plug.vim
 .vim/.netrwhist
 ble.sh
