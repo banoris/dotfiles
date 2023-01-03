@@ -46,3 +46,7 @@
 [submodule ".vim/pack/banoris/start/mru"]
 	path = .vim/pack/banoris/start/mru
 	url = https://github.com/yegappan/mru.git
+[submodule ".vim/pack/banoris/start/vim-unimpaired"]
+	path = .vim/pack/banoris/start/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired
+
