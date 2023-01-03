@@ -339,39 +339,39 @@ fgr() {
 # What happen for chained command? E.g., `gmake target1 && gmake target2`
 # If the 1st completes quickly, then $filename_ will be the same, thus
 # writing to the same file
-gmake() {
-    # e.g. filename, asd_08-31_1038-39.log
-    # Temporarily enable pipefail
-    # pipefail disabled by default in bash, no idea why...
-    #   Refer https://stackoverflow.com/questions/1221833/pipe-output-and-capture-exit-status-in-bash
-    set -o pipefail
-    local log_dir=ASD_REMOVEME_LOGS
-    [ ! -d "${log_dir}" ] && mkdir -p "${log_dir}"
-    local timenow=$SECONDS
-    local filename_="${log_dir}/asd_$(date +"%FT%H%M-%S").log"
-    echo "================================================" >> $filename_
-    echo "START=$(date --iso-8601=seconds)" |& tee -a $filename_
-    echo "CMD=gmake $*" |& tee -a $filename_
-    echo "Logfile path: $filename_"
-    command gmake $* |& tee -a $filename_
-    local exit_code_=$?
-    echo "exit_code_=${exit_code_}"
-    echo "END=$(date --iso-8601=seconds)" |& tee -a $filename_
-    local timetaken=$(($SECONDS - $timenow))
-    echo "ELAPSED_TIME=$(($timetaken / 60))m$(($timetaken % 60))s" |& tee -a $filename_
-    echo "Logfile path: $filename_"
-    echo "================================================" >> $filename_
-    # if gmake cmd above failed, propagate its error code. Why need this?
-    #     gmake FAILED_BUILD && gmake ...
-    # Don't want to execute ls if prev gmake command failed. Execute `exit` on a subshell
-    # so the current interactive shell won't exit. We just want the exit code
-    set +o pipefail # reset pipefail
-    if [ $exit_code_ -ne 0 ]; then (exit $exit_code_); fi
-
-    # NOTE: crazy bug! [ ], aka `test`, returns non-zero if expression evaluates to False
-    # So eventhough $exit_code_ is not zero (exit after && not executed), $? is still set to 1
-    # [ $exit_code_ -ne 0 ] && (exit $exit_code_)
-}
+# gmake() {
+#     # e.g. filename, asd_08-31_1038-39.log
+#     # Temporarily enable pipefail
+#     # pipefail disabled by default in bash, no idea why...
+#     #   Refer https://stackoverflow.com/questions/1221833/pipe-output-and-capture-exit-status-in-bash
+#     set -o pipefail
+#     local log_dir=ASD_REMOVEME_LOGS
+#     [ ! -d "${log_dir}" ] && mkdir -p "${log_dir}"
+#     local timenow=$SECONDS
+#     local filename_="${log_dir}/asd_$(date +"%FT%H%M-%S").log"
+#     echo "================================================" >> $filename_
+#     echo "START=$(date --iso-8601=seconds)" |& tee -a $filename_
+#     echo "CMD=gmake $*" |& tee -a $filename_
+#     echo "Logfile path: $filename_"
+#     command gmake $* |& tee -a $filename_
+#     local exit_code_=$?
+#     echo "exit_code_=${exit_code_}"
+#     echo "END=$(date --iso-8601=seconds)" |& tee -a $filename_
+#     local timetaken=$(($SECONDS - $timenow))
+#     echo "ELAPSED_TIME=$(($timetaken / 60))m$(($timetaken % 60))s" |& tee -a $filename_
+#     echo "Logfile path: $filename_"
+#     echo "================================================" >> $filename_
+#     # if gmake cmd above failed, propagate its error code. Why need this?
+#     #     gmake FAILED_BUILD && gmake ...
+#     # Don't want to execute ls if prev gmake command failed. Execute `exit` on a subshell
+#     # so the current interactive shell won't exit. We just want the exit code
+#     set +o pipefail # reset pipefail
+#     if [ $exit_code_ -ne 0 ]; then (exit $exit_code_); fi
+# 
+#     # NOTE: crazy bug! [ ], aka `test`, returns non-zero if expression evaluates to False
+#     # So eventhough $exit_code_ is not zero (exit after && not executed), $? is still set to 1
+#     # [ $exit_code_ -ne 0 ] && (exit $exit_code_)
+# }
 
 # USAGE: view-csv some-file.csv
 #   View csv file in vim
