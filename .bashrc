@@ -253,8 +253,18 @@ export GIT_PS1_SHOWUPSTREAM="verbose git"
 # export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\j\$\[\e[m\] "
 # export PS1='\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 "[%s]")\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$\[\e[m\] '
 
+case $(hostname -s) in
+    # use this color for local machine
+    EMB*)
+        prompt_color='\033[48;5;16m\033[38;5;46m'
+        ;;
+    *)
+        prompt_color='1;36m'
+        ;;
+esac
 # \j - number of background jobs. Show only if job exists
-export PS1="\[\e[1;36m\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[1;36m \D{%a %H:%M:%S}\n\$([ \j -gt 0 ] && echo [\j])\$\[\e[m\] "
+export PS1="\[\e[${prompt_color}\][\u@\h \w]\e[35m\$(__git_ps1 '[%s]')\e[0m\e[${prompt_color} \D{%a %H:%M:%S}\n\$([ \j -gt 0 ] && echo [\j])\$\[\e[m\] "
+unset prompt_color
 
 # less setting
 #export LESS='-XFR'
@@ -406,6 +416,8 @@ if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UU
 
 # Setup git autocomplete for git alias g
 complete -o default -o nospace -F _git g
+# Above doesn't work for Mac, so use below
+__git_complete g __git_main
 
 
 # ble.sh
