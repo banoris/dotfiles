@@ -410,6 +410,7 @@ if [[ -n "${TERMINATOR_UUID}" ]]; then HISTFILE=~/.bash_history."${TERMINATOR_UU
 [[ -f ~/dotfiles/.git-completion.bash ]] && source ~/dotfiles/.git-completion.bash
 [[ -f ~/dotfiles/.kubectl-completion.bash ]] && source ~/dotfiles/.kubectl-completion.bash
 [[ -f ~/dotfiles/completions/helm-completion.bash ]] && source ~/dotfiles/completions/helm-completion.bash
+[[ -f ~/dotfiles/completions/colima-completion.bash ]] && source ~/dotfiles/completions/colima-completion.bash
 
 # Project specific setting
 [[ -f ~/dotfiles-eric/.bashrc.eric ]] && source ~/dotfiles-eric/.bashrc.eric
